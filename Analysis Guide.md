@@ -73,6 +73,7 @@ replace suffix = "00" if suffix == "0"
 replace suffix = "00" if suffix == "000"
 replace suffix = "05" if suffix == "5"
 // Standardizes incorrectly formatted suffix values.
+//The schedules were checked for other one-digit suffix values, but only "0" and "5" were found. Therefore, the script manually standardizes only the observed inconsistent entries: "0" and "000" to "00", and "5" to "05".
 
 sort item
 // Sorts the dataset by item code.
