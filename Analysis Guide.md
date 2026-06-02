@@ -8,7 +8,7 @@
 clear all                  // Clears Stata's memory.
 set more off               // Prevents output pauses.
 
-cd "C:\Users\USER\Desktop\Tariff-RA-Data"   // Sets the working directory.
+cd "C:\Users\USER\Desktop\Tariff-RA-Data"   // cd "C:\Users\USER\Desktop\Tariff-RA-Data"   // Sets the working directory. Update this path to match your local project folder.
 
 log using "Analysis\Codes\01a_append_log.smcl", replace   // Starts a log file.
 
@@ -84,3 +84,11 @@ save "$data\Stata Files\tsus_appended.dta", replace
 
 log close
 // Closes the log file.
+```
+
+## Suffix.do
+```stata
+clear all
+set more off
+
+c
