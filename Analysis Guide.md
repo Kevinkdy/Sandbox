@@ -3,6 +3,7 @@
 
 
 # Analysis Guide
+## Append.do
 ```stata
 clear all                  // Clears Stata's memory.
 set more off               // Prevents output pauses.
