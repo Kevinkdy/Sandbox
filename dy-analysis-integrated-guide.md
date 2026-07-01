@@ -52,7 +52,6 @@ Before appending the schedules, the script standardizes key identifier variables
 <details>
 <summary>Input: verified_schedule1-8.xlsx</summary>
 
-
 #### File Role in Workflow
 
 `verified_schedule1-8.xlsx` represents the verified Excel schedule files created from the original TSUS PDFs. These files are the first structured data input in the TSUS workflow: they translate the raw tariff schedules into rows and columns that can be imported by [`01a_append.do`](../analysis_guide/01a_append.md).
@@ -84,7 +83,6 @@ This guide does not restate those conventions. Instead, it documents the resulti
 
 <details>
 <summary>Output: tsus_appended.dta</summary>
-
 
 #### File Role in Workflow
 
@@ -208,7 +206,6 @@ log close
 <details>
 <summary>Input: tsus_appended.dta</summary>
 
-
 #### File Role in Workflow
 
 `tsus_appended.dta` is the intermediate Stata dataset created from the verified Excel schedule files. It combines schedules 1-8 after import, type standardization, reshape, and append, and prepares the data for suffix cleaning and TSUSA code construction in [`01b_suffix_fix.do`](../analysis_guide/01b_suffix_fix.md).
@@ -228,10 +225,9 @@ log close
 <details>
 <summary>Output: tsus_uncorrected.dta</summary>
 
-
 #### File Role in Workflow
 
-`tsus_uncorrected.dta` is the TSUS tariff dataset created after suffix cleaning, TSUSA code creation, rate fixes, row expansion, and year extension. In this workflow, "uncorrected" means that the dataset has not yet gone through the final duty-variable cleaning step in [`01c_clean_duties.do`](../analysis_guide/01c_clean_duties.md). It is the suffix-step output that used to be described as [`tsus_final.dta`](01d_tsus_final.dta.md) before the workflow split out the final duty-cleaning step.
+`tsus_uncorrected.dta` is the suffix-stage intermediate dataset created after suffix cleaning, TSUSA code creation, 320-331 and 301-302 reference-rate corrections, suffix-row expansion, and year extension. In this workflow, "uncorrected" means that the dataset has not yet gone through the final duty-variable cleaning step in [`01c_clean_duties.do`](../analysis_guide/01c_clean_duties.md).
 
 #### Created From
 
@@ -245,11 +241,25 @@ log close
 
 - [`01c_clean_duties.do`](../analysis_guide/01c_clean_duties.md)
 
+
 </details>
 
-### Code Explanation
+### How This Step Creates the Output
 
-The script builds suffix maps for 32000-33100 prefix groups, loads `tsus_appended.dta`, trims and validates suffix values, creates numeric TSUSA codes, and converts ad valorem duty variables to numeric. It then uses 320-series and 301-series reference-rate tables to calculate related rates, expands suffix `00` rows into valid suffix-specific rows, copies 1972 rows forward to 1973-1975, cleans specific-duty fields, and saves `tsus_uncorrected.dta`.
+This step creates `tsus_uncorrected.dta` by:
+
+- Loading the appended schedule dataset, `tsus_appended.dta`.
+- Cleaning the `item` and `suffix` fields by removing extra spaces and known non-code suffix markers.
+- Checking that remaining suffix values are either numeric or blank.
+- Creating a 7-digit `tsusa` code by combining the 5-digit `item` code with the 2-digit `suffix` code.
+- Keeping `suffix` as a string so values like `01` keep their leading zero.
+- Correcting 320-331 reference-rate cases using item 320 as the base group.
+- Correcting 301-302 reference-rate cases using item 301 as the base group.
+- Expanding rows that apply to multiple suffix codes so duty rates are recorded at the correct suffix level.
+- Recreating `tsusa` after suffix expansion.
+- Adding 1973-1975 rows by copying the 1972 row structure.
+- Parsing and converting specific-duty fields into numeric values.
+- Saving the suffix-fixed intermediate dataset as `tsus_uncorrected.dta`.
 
 <details>
 <summary>Full commented 01b_suffix_fix.do code</summary>
@@ -568,10 +578,9 @@ log close
 <details>
 <summary>Input: tsus_uncorrected.dta</summary>
 
-
 #### File Role in Workflow
 
-`tsus_uncorrected.dta` is the TSUS tariff dataset created after suffix cleaning, TSUSA code creation, rate fixes, row expansion, and year extension. In this workflow, "uncorrected" means that the dataset has not yet gone through the final duty-variable cleaning step in [`01c_clean_duties.do`](../analysis_guide/01c_clean_duties.md). It is the suffix-step output that used to be described as [`tsus_final.dta`](01d_tsus_final.dta.md) before the workflow split out the final duty-cleaning step.
+`tsus_uncorrected.dta` is the suffix-stage intermediate dataset created after suffix cleaning, TSUSA code creation, 320-331 and 301-302 reference-rate corrections, suffix-row expansion, and year extension. In this workflow, "uncorrected" means that the dataset has not yet gone through the final duty-variable cleaning step in [`01c_clean_duties.do`](../analysis_guide/01c_clean_duties.md).
 
 #### Created From
 
@@ -585,6 +594,7 @@ log close
 
 - [`01c_clean_duties.do`](../analysis_guide/01c_clean_duties.md)
 
+
 </details>
 
 ### Outputs
@@ -592,10 +602,9 @@ log close
 <details>
 <summary>Output: tsus_final.dta</summary>
 
-
 #### File Role in Workflow
 
-`tsus_final.dta` is the cleaned TSUS tariff dataset created after the suffix-fixed intermediate data has gone through final duty-variable cleaning and rate corrections. It is the main cleaned tariff file used for diagnostics, figures, weights, and trade-data merges.
+`tsus_final.dta` is the final cleaned TSUS tariff dataset created after [`tsus_uncorrected.dta`](01c_tsus_uncorrected.dta.md) has gone through final duty-variable cleanup. It inherits the suffix, TSUSA, and reference-rate corrections created in [`01b_suffix_fix.do`](../analysis_guide/01b_suffix_fix.md), then applies the final cleaning needed for diagnostics, figures, weights, and trade-data merges.
 
 #### Created From
 
@@ -610,11 +619,19 @@ log close
 - [`01d_diagnostics.do`](../analysis_guide/01d_diagnostics.md)
 - [`02_merge.do`](../analysis_guide/02_merge.md)
 
+
 </details>
 
-### Code Explanation
+### How This Step Creates the Output
 
-The script loads `tsus_uncorrected.dta`, inspects duty-variable types, sorts the data, trims specific-duty strings, lists non-numeric duty entries, counts missing values, temporarily recodes `base rate` as `999999`, verifies that non-numeric characters have been handled, destrings duty variables and identifiers, fills selected later-year ad valorem values from 1968 when later years are all zero, and saves `tsus_final.dta`.
+This step creates `tsus_final.dta` by:
+
+- Loading the suffix-fixed intermediate dataset, `tsus_uncorrected.dta`.
+- Checking duty variables for missing and non-numeric values.
+- Cleaning known text entries such as `base rate`.
+- Converting duty variables, `tsusa`, and `item` into numeric format where needed.
+- Filling selected 1969-1975 ad valorem duty values with the 1968 rate when later-year values are all zero.
+- Saving the final cleaned tariff dataset as `tsus_final.dta`.
 
 <details>
 <summary>Full commented 01c_clean_duties.do code</summary>
@@ -766,10 +783,9 @@ log close
 <details>
 <summary>Input: tsus_final.dta</summary>
 
-
 #### File Role in Workflow
 
-`tsus_final.dta` is the cleaned TSUS tariff dataset created after the suffix-fixed intermediate data has gone through final duty-variable cleaning and rate corrections. It is the main cleaned tariff file used for diagnostics, figures, weights, and trade-data merges.
+`tsus_final.dta` is the final cleaned TSUS tariff dataset created after [`tsus_uncorrected.dta`](01c_tsus_uncorrected.dta.md) has gone through final duty-variable cleanup. It inherits the suffix, TSUSA, and reference-rate corrections created in [`01b_suffix_fix.do`](../analysis_guide/01b_suffix_fix.md), then applies the final cleaning needed for diagnostics, figures, weights, and trade-data merges.
 
 #### Created From
 
@@ -783,6 +799,7 @@ log close
 
 - [`01d_diagnostics.do`](../analysis_guide/01d_diagnostics.md)
 - [`02_merge.do`](../analysis_guide/02_merge.md)
+
 
 </details>
 
@@ -985,10 +1002,9 @@ The script saves three downstream datasets. First, it saves `tsus_final_weights.
 <details>
 <summary>Input: tsus_final.dta</summary>
 
-
 #### File Role in Workflow
 
-`tsus_final.dta` is the cleaned TSUS tariff dataset created after the suffix-fixed intermediate data has gone through final duty-variable cleaning and rate corrections. It is the main cleaned tariff file used for diagnostics, figures, weights, and trade-data merges.
+`tsus_final.dta` is the final cleaned TSUS tariff dataset created after [`tsus_uncorrected.dta`](01c_tsus_uncorrected.dta.md) has gone through final duty-variable cleanup. It inherits the suffix, TSUSA, and reference-rate corrections created in [`01b_suffix_fix.do`](../analysis_guide/01b_suffix_fix.md), then applies the final cleaning needed for diagnostics, figures, weights, and trade-data merges.
 
 #### Created From
 
@@ -1003,6 +1019,7 @@ The script saves three downstream datasets. First, it saves `tsus_final_weights.
 - [`01d_diagnostics.do`](../analysis_guide/01d_diagnostics.md)
 - [`02_merge.do`](../analysis_guide/02_merge.md)
 
+
 </details>
 
 <details>
@@ -1014,7 +1031,6 @@ The script saves three downstream datasets. First, it saves `tsus_final_weights.
 
 <details>
 <summary>Output: tsus_final_weights.dta</summary>
-
 
 #### File Role in Workflow
 
@@ -1033,7 +1049,6 @@ The script saves three downstream datasets. First, it saves `tsus_final_weights.
 
 <details>
 <summary>Output: trade_appended.dta</summary>
-
 
 #### File Role in Workflow
 
@@ -1055,7 +1070,6 @@ The script saves three downstream datasets. First, it saves `tsus_final_weights.
 
 <details>
 <summary>Output: tsus_trade_merged.dta</summary>
-
 
 #### File Role in Workflow
 
