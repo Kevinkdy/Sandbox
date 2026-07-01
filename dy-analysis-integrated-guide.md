@@ -64,7 +64,15 @@ Before appending the schedules, the script standardizes key identifier variables
 
 `verified_schedule1-8.xlsx` represents the verified Excel schedule files created from the original TSUS PDFs. These files are the first structured data input in the TSUS workflow: they translate the raw tariff schedules into rows and columns that can be imported by [`01a_append.do`](../analysis_guide/01a_append.md).
 
-This file guide explains the role of the verified schedules as data inputs. The detailed rules for entering, interpreting, and verifying TSUS schedule information are documented separately in [TSUS Source and Data Conventions](00b_tsus_source_and_data_conventions.md).
+This file guide explains the role of the verified schedules as data inputs. The detailed rules for entering, interpreting, and verifying TSUS schedule information are documented separately in [TSUS SOURCE AND DATA CONVENTIONS](https://github.com/Shafaatyark/Tariffs-RAs/blob/DY--Analysis/tsus_source_and_data_conventions.md).
+
+#### Created From
+
+- [TSUS PDFs](https://babel.hathitrust.org/cgi/pt?id=uiug.30112105138785&seq=19)
+
+#### Created By
+
+- Manual digitization and verification process documented in [TSUS SOURCE AND DATA CONVENTIONS](https://github.com/Shafaatyark/Tariffs-RAs/blob/DY--Analysis/tsus_source_and_data_conventions.md)
 
 #### What This File Contains
 
@@ -81,7 +89,7 @@ The schedules are stored as Excel files before being imported into Stata. Format
 
 #### How It Is Produced
 
-The verified schedules are created by digitizing the original TSUS PDF schedules into Excel and then checking the entered data against the source documents. The digitization and verification process follows the conventions in [TSUS Source and Data Conventions](00b_tsus_source_and_data_conventions.md).
+The verified schedules are created by digitizing the original TSUS PDF schedules into Excel and then checking the entered data against the source documents. The digitization and verification process follows the conventions in [TSUS SOURCE AND DATA CONVENTIONS](https://github.com/Shafaatyark/Tariffs-RAs/blob/DY--Analysis/tsus_source_and_data_conventions.md).
 
 This guide does not restate those conventions. Instead, it documents the resulting Excel files as the workflow input used by the Stata pipeline.
 
