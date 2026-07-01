@@ -6,6 +6,14 @@ The main reading path follows the analysis scripts. Input and output data-file n
 
 Source branch used for this draft: `Shafaatyark/Tariffs-RAs`, `DY--Analysis`.
 
+## Table of Contents
+
+- [Append (`01a_append.do`)](#01a_appenddo)
+- [Suffix (`01b_suffix_fix.do`)](#01b_suffix_fixdo)
+- [Clean Duties (`01c_clean_duties.do`)](#01c_clean_dutiesdo)
+- [Diagnostics (`01d_diagnostics.do`)](#01d_diagnosticsdo)
+- [Merge (`02_merge.do`)](#02_mergedo)
+
 ## Workflow Overview
 
 ```mermaid
