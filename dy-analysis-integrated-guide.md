@@ -810,9 +810,17 @@ log close
 
 </details>
 
-### Code Explanation
+### How This Step Creates the Output
 
-The script loads `tsus_final.dta`, exports histograms for column 1 and column 2 ad valorem duty rates, reshapes selected data to compare 1968 and 1972 rates side by side, creates scatter plots with reference lines, generates a box-and-whisker plot by year, counts high-end outliers, lists unusual duty-rate patterns, and exports highlighted diagnostic figures.
+This step creates diagnostic figures and log output by:
+
+- Loading the final cleaned tariff dataset, `tsus_final.dta`.
+- Creating histograms for column 1 and column 2 ad valorem duty rates.
+- Comparing 1968 and 1972 duty rates with scatter plots.
+- Creating after-fix comparison plots to check whether duty-rate corrections look reasonable.
+- Generating a box-and-whisker plot to summarize duty-rate distributions by year.
+- Listing unusual duty-rate patterns for review.
+- Exporting diagnostic figures and saving the diagnostic log.
 
 <details>
 <summary>Full commented 01d_diagnostics.do code</summary>
@@ -1086,9 +1094,18 @@ The script saves three downstream datasets. First, it saves `tsus_final_weights.
 
 </details>
 
-### Code Explanation
+### How This Step Creates the Output
 
-The script loads `tsus_final.dta`, converts `tsusa` to numeric, saves the cleaned tariff file, loads 1976 import data to calculate quantity-based `spec_weight`, collapses weights to one row per `tsusa`, merges those weights onto the cleaned TSUS data, and saves `tsus_final_weights.dta`. It then loads the 1968 import file, appends the 1969-1972 import files, converts `tsusa` to numeric, saves `trade_appended.dta`, reloads `tsus_final.dta`, merges trade data by `tsusa` and `year`, and saves `tsus_trade_merged.dta`.
+This step creates the merge outputs by:
+
+- Loading the final cleaned tariff dataset, `tsus_final.dta`.
+- Using `Imports-1976.dta` to calculate `spec_weight` for selected Schedule 6 items that need the specific-weight adjustment.
+- Collapsing product weights to one average `spec_weight` per `tsusa`.
+- Merging those weights onto the cleaned TSUS data and saving `tsus_final_weights.dta`.
+- Appending the 1968-1972 annual import files into one trade dataset.
+- Saving the appended trade file as `trade_appended.dta`.
+- Merging `tsus_final.dta` with `trade_appended.dta` by `tsusa` and `year`.
+- Saving the final tariff-trade merge output as `tsus_trade_merged.dta`.
 
 <details>
 <summary>Full commented 02_merge.do code</summary>
