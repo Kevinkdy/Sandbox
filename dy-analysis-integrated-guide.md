@@ -61,9 +61,16 @@ Before appending the schedules, the script standardizes key identifier variables
 
 </details>
 
-### Code Explanation
+### How This Step Creates the Output
 
-The script loops through schedules 1 through 8, imports each verified Excel file, converts identifier and duty columns into consistent formats, reshapes duty columns into long format by year, and appends the schedule-level data into a single temporary dataset. After all schedules are combined, it drops empty columns, standardizes observed suffix formatting problems such as `0`, `000`, and `5`, sorts by item, and saves `tsus_appended.dta`.
+This step creates `tsus_appended.dta` by:
+
+- Importing the verified Excel schedule files into Stata.
+- Standardizing key columns so the schedule files can be combined safely.
+- Reshaping year-specific duty columns into a long format.
+- Appending schedules 1-8 into one combined dataset.
+- Standardizing observed suffix formatting issues.
+- Saving the combined result as `tsus_appended.dta`.
 
 <details>
 <summary>Full commented 01a_append.do code</summary>
