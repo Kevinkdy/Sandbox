@@ -52,12 +52,51 @@ Before appending the schedules, the script standardizes key identifier variables
 <details>
 <summary>Input: verified_schedule1-8.xlsx</summary>
 
+
+#### File Role in Workflow
+
+`verified_schedule1-8.xlsx` represents the verified Excel schedule files created from the original TSUS PDFs. These files are the first structured data input in the TSUS workflow: they translate the raw tariff schedules into rows and columns that can be imported by [`01a_append.do`](../analysis_guide/01a_append.md).
+
+This file guide explains the role of the verified schedules as data inputs. The detailed rules for entering, interpreting, and verifying TSUS schedule information are documented separately in [TSUS Source and Data Conventions](00b_tsus_source_and_data_conventions.md).
+
+#### What This File Contains
+
+The verified schedule files contain digitized TSUS schedule information for schedules 1 through 8. They preserve the core fields needed for later cleaning and analysis, including:
+
+- tariff item codes;
+- suffix codes;
+- specific and ad valorem duty values;
+- unit information;
+- notes copied or summarized from the source schedules;
+- flags for entries requiring special interpretation.
+
+The schedules are stored as Excel files before being imported into Stata. Formatting choices such as text-formatted cells, preserved suffix values, and note fields matter because the later Stata scripts depend on these fields being readable and consistent.
+
+#### How It Is Produced
+
+The verified schedules are created by digitizing the original TSUS PDF schedules into Excel and then checking the entered data against the source documents. The digitization and verification process follows the conventions in [TSUS Source and Data Conventions](00b_tsus_source_and_data_conventions.md).
+
+This guide does not restate those conventions. Instead, it documents the resulting Excel files as the workflow input used by the Stata pipeline.
+
 </details>
 
 ### Outputs
 
 <details>
 <summary>Output: tsus_appended.dta</summary>
+
+
+#### File Role in Workflow
+
+`tsus_appended.dta` is the intermediate Stata dataset created from the verified Excel schedule files. It combines schedules 1-8 after import, type standardization, reshape, and append, and prepares the data for suffix cleaning and TSUSA code construction in [`01b_suffix_fix.do`](../analysis_guide/01b_suffix_fix.md).
+
+#### Created From
+
+- [`verified_schedule1-8.xlsx`](01a_verified_schedule1-8.xlsx.md)
+
+#### Created By
+
+- [`01a_append.do`](../analysis_guide/01a_append.md)
 
 </details>
 
@@ -169,12 +208,42 @@ log close
 <details>
 <summary>Input: tsus_appended.dta</summary>
 
+
+#### File Role in Workflow
+
+`tsus_appended.dta` is the intermediate Stata dataset created from the verified Excel schedule files. It combines schedules 1-8 after import, type standardization, reshape, and append, and prepares the data for suffix cleaning and TSUSA code construction in [`01b_suffix_fix.do`](../analysis_guide/01b_suffix_fix.md).
+
+#### Created From
+
+- [`verified_schedule1-8.xlsx`](01a_verified_schedule1-8.xlsx.md)
+
+#### Created By
+
+- [`01a_append.do`](../analysis_guide/01a_append.md)
+
 </details>
 
 ### Outputs
 
 <details>
 <summary>Output: tsus_uncorrected.dta</summary>
+
+
+#### File Role in Workflow
+
+`tsus_uncorrected.dta` is the TSUS tariff dataset created after suffix cleaning, TSUSA code creation, rate fixes, row expansion, and year extension. In this workflow, "uncorrected" means that the dataset has not yet gone through the final duty-variable cleaning step in [`01c_clean_duties.do`](../analysis_guide/01c_clean_duties.md). It is the suffix-step output that used to be described as [`tsus_final.dta`](01d_tsus_final.dta.md) before the workflow split out the final duty-cleaning step.
+
+#### Created From
+
+- [`tsus_appended.dta`](01b_tsus_appended.dta.md)
+
+#### Created By
+
+- [`01b_suffix_fix.do`](../analysis_guide/01b_suffix_fix.md)
+
+#### Used By
+
+- [`01c_clean_duties.do`](../analysis_guide/01c_clean_duties.md)
 
 </details>
 
@@ -499,12 +568,47 @@ log close
 <details>
 <summary>Input: tsus_uncorrected.dta</summary>
 
+
+#### File Role in Workflow
+
+`tsus_uncorrected.dta` is the TSUS tariff dataset created after suffix cleaning, TSUSA code creation, rate fixes, row expansion, and year extension. In this workflow, "uncorrected" means that the dataset has not yet gone through the final duty-variable cleaning step in [`01c_clean_duties.do`](../analysis_guide/01c_clean_duties.md). It is the suffix-step output that used to be described as [`tsus_final.dta`](01d_tsus_final.dta.md) before the workflow split out the final duty-cleaning step.
+
+#### Created From
+
+- [`tsus_appended.dta`](01b_tsus_appended.dta.md)
+
+#### Created By
+
+- [`01b_suffix_fix.do`](../analysis_guide/01b_suffix_fix.md)
+
+#### Used By
+
+- [`01c_clean_duties.do`](../analysis_guide/01c_clean_duties.md)
+
 </details>
 
 ### Outputs
 
 <details>
 <summary>Output: tsus_final.dta</summary>
+
+
+#### File Role in Workflow
+
+`tsus_final.dta` is the cleaned TSUS tariff dataset created after the suffix-fixed intermediate data has gone through final duty-variable cleaning and rate corrections. It is the main cleaned tariff file used for diagnostics, figures, weights, and trade-data merges.
+
+#### Created From
+
+- [`tsus_uncorrected.dta`](01c_tsus_uncorrected.dta.md)
+
+#### Created By
+
+- [`01c_clean_duties.do`](../analysis_guide/01c_clean_duties.md)
+
+#### Used By
+
+- [`01d_diagnostics.do`](../analysis_guide/01d_diagnostics.md)
+- [`02_merge.do`](../analysis_guide/02_merge.md)
 
 </details>
 
@@ -661,6 +765,24 @@ log close
 
 <details>
 <summary>Input: tsus_final.dta</summary>
+
+
+#### File Role in Workflow
+
+`tsus_final.dta` is the cleaned TSUS tariff dataset created after the suffix-fixed intermediate data has gone through final duty-variable cleaning and rate corrections. It is the main cleaned tariff file used for diagnostics, figures, weights, and trade-data merges.
+
+#### Created From
+
+- [`tsus_uncorrected.dta`](01c_tsus_uncorrected.dta.md)
+
+#### Created By
+
+- [`01c_clean_duties.do`](../analysis_guide/01c_clean_duties.md)
+
+#### Used By
+
+- [`01d_diagnostics.do`](../analysis_guide/01d_diagnostics.md)
+- [`02_merge.do`](../analysis_guide/02_merge.md)
 
 </details>
 
@@ -863,6 +985,24 @@ The script saves three downstream datasets. First, it saves `tsus_final_weights.
 <details>
 <summary>Input: tsus_final.dta</summary>
 
+
+#### File Role in Workflow
+
+`tsus_final.dta` is the cleaned TSUS tariff dataset created after the suffix-fixed intermediate data has gone through final duty-variable cleaning and rate corrections. It is the main cleaned tariff file used for diagnostics, figures, weights, and trade-data merges.
+
+#### Created From
+
+- [`tsus_uncorrected.dta`](01c_tsus_uncorrected.dta.md)
+
+#### Created By
+
+- [`01c_clean_duties.do`](../analysis_guide/01c_clean_duties.md)
+
+#### Used By
+
+- [`01d_diagnostics.do`](../analysis_guide/01d_diagnostics.md)
+- [`02_merge.do`](../analysis_guide/02_merge.md)
+
 </details>
 
 <details>
@@ -875,15 +1015,60 @@ The script saves three downstream datasets. First, it saves `tsus_final_weights.
 <details>
 <summary>Output: tsus_final_weights.dta</summary>
 
+
+#### File Role in Workflow
+
+`tsus_final_weights.dta` is an intermediate weighted tariff file created by calculating quantity-based `spec_weight` values from 1976 import data and merging those weights onto the cleaned TSUS dataset.
+
+#### Created From
+
+- [`tsus_final.dta`](01d_tsus_final.dta.md)
+- [`Imports-1976.dta`](https://sumailsyr-my.sharepoint.com/shared?id=%2Fpersonal%2Fskhan78%5Fsyr%5Fedu%2FDocuments%2FTariff%2DRA%2DData%2FAnalysis%2FData%20Files%2FRaw%20Files%2FTrade%5Fdata&listurl=%2Fpersonal%2Fskhan78%5Fsyr%5Fedu%2FDocuments&viewid=86dc3307%2D03bb%2D450c%2D8873%2D3d25737bc75a&sharingv2=true&fromShare=true&at=9&CT=1779052695969&OR=OWA%2DNT%2DMail&FolderCTID=0x012000FA572F48052EFB478E38BA7D6582FC25)
+
+#### Created By
+
+- [`02_merge.do`](../analysis_guide/02_merge.md)
+
 </details>
 
 <details>
 <summary>Output: trade_appended.dta</summary>
 
+
+#### File Role in Workflow
+
+`trade_appended.dta` is the combined import trade dataset created from the 1968-1972 raw import files. It is used as the trade-data input for creating [`tsus_trade_merged.dta`](02b_tsus_trade_merged.dta.md).
+
+#### Created From
+
+- [`Imports-1968.dta`](https://sumailsyr-my.sharepoint.com/shared?id=%2Fpersonal%2Fskhan78%5Fsyr%5Fedu%2FDocuments%2FTariff%2DRA%2DData%2FAnalysis%2FData%20Files%2FRaw%20Files%2FTrade%5Fdata&listurl=%2Fpersonal%2Fskhan78%5Fsyr%5Fedu%2FDocuments&viewid=86dc3307%2D03bb%2D450c%2D8873%2D3d25737bc75a&sharingv2=true&fromShare=true&at=9&CT=1779052695969&OR=OWA%2DNT%2DMail&FolderCTID=0x012000FA572F48052EFB478E38BA7D6582FC25)
+- [`Imports-1969.dta`](https://sumailsyr-my.sharepoint.com/shared?id=%2Fpersonal%2Fskhan78%5Fsyr%5Fedu%2FDocuments%2FTariff%2DRA%2DData%2FAnalysis%2FData%20Files%2FRaw%20Files%2FTrade%5Fdata&listurl=%2Fpersonal%2Fskhan78%5Fsyr%5Fedu%2FDocuments&viewid=86dc3307%2D03bb%2D450c%2D8873%2D3d25737bc75a&sharingv2=true&fromShare=true&at=9&CT=1779052695969&OR=OWA%2DNT%2DMail&FolderCTID=0x012000FA572F48052EFB478E38BA7D6582FC25)
+- [`Imports-1970.dta`](https://sumailsyr-my.sharepoint.com/shared?id=%2Fpersonal%2Fskhan78%5Fsyr%5Fedu%2FDocuments%2FTariff%2DRA%2DData%2FAnalysis%2FData%20Files%2FRaw%20Files%2FTrade%5Fdata&listurl=%2Fpersonal%2Fskhan78%5Fsyr%5Fedu%2FDocuments&viewid=86dc3307%2D03bb%2D450c%2D8873%2D3d25737bc75a&sharingv2=true&fromShare=true&at=9&CT=1779052695969&OR=OWA%2DNT%2DMail&FolderCTID=0x012000FA572F48052EFB478E38BA7D6582FC25)
+- [`Imports-1971.dta`](https://sumailsyr-my.sharepoint.com/shared?id=%2Fpersonal%2Fskhan78%5Fsyr%5Fedu%2FDocuments%2FTariff%2DRA%2DData%2FAnalysis%2FData%20Files%2FRaw%20Files%2FTrade%5Fdata&listurl=%2Fpersonal%2Fskhan78%5Fsyr%5Fedu%2FDocuments&viewid=86dc3307%2D03bb%2D450c%2D8873%2D3d25737bc75a&sharingv2=true&fromShare=true&at=9&CT=1779052695969&OR=OWA%2DNT%2DMail&FolderCTID=0x012000FA572F48052EFB478E38BA7D6582FC25)
+- [`Imports-1972.dta`](https://sumailsyr-my.sharepoint.com/shared?id=%2Fpersonal%2Fskhan78%5Fsyr%5Fedu%2FDocuments%2FTariff%2DRA%2DData%2FAnalysis%2FData%20Files%2FRaw%20Files%2FTrade%5Fdata&listurl=%2Fpersonal%2Fskhan78%5Fsyr%5Fedu%2FDocuments&viewid=86dc3307%2D03bb%2D450c%2D8873%2D3d25737bc75a&sharingv2=true&fromShare=true&at=9&CT=1779052695969&OR=OWA%2DNT%2DMail&FolderCTID=0x012000FA572F48052EFB478E38BA7D6582FC25)
+
+#### Created By
+
+- [`02_merge.do`](../analysis_guide/02_merge.md)
+
 </details>
 
 <details>
 <summary>Output: tsus_trade_merged.dta</summary>
+
+
+#### File Role in Workflow
+
+`tsus_trade_merged.dta` is the analysis-ready merge output that combines cleaned TSUS tariff data with appended 1968-1972 import trade files by `tsusa` and `year`.
+
+#### Created From
+
+- [`tsus_final.dta`](01d_tsus_final.dta.md)
+- [`trade_appended.dta`](02a_trade_appended.dta.md)
+
+#### Created By
+
+- [`02_merge.do`](../analysis_guide/02_merge.md)
 
 </details>
 
