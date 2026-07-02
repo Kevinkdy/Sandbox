@@ -58,8 +58,10 @@ Before appending the schedules, the script standardizes key identifier variables
 
 ### File Notes
 
+> Expand the sections below for input and output file documentation.
+
 <details>
-<summary>Input: verified_schedule1-8.xlsx</summary>
+<summary><strong>Input file: verified_schedule1-8.xlsx</strong></summary>
 
 #### File Role in Workflow
 
@@ -92,7 +94,7 @@ The schedules are stored as Excel files before being imported into Stata. Format
 
 
 <details>
-<summary>Output: tsus_appended.dta</summary>
+<summary><strong>Output file: tsus_appended.dta</strong></summary>
 
 #### File Role in Workflow
 
@@ -109,7 +111,7 @@ The schedules are stored as Excel files before being imported into Stata. Format
 </details>
 
 
-### How This Step Creates the Output
+### Step Explanation
 
 This step creates `tsus_appended.dta` by:
 
@@ -216,8 +218,10 @@ log close
 
 ### File Notes
 
+> Expand the sections below for input and output file documentation.
+
 <details>
-<summary>Input: tsus_appended.dta</summary>
+<summary><strong>Input file: tsus_appended.dta</strong></summary>
 
 #### File Role in Workflow
 
@@ -235,7 +239,7 @@ log close
 
 
 <details>
-<summary>Output: tsus_uncorrected.dta</summary>
+<summary><strong>Output file: tsus_uncorrected.dta</strong></summary>
 
 #### File Role in Workflow
 
@@ -257,7 +261,7 @@ log close
 </details>
 
 
-### How This Step Creates the Output
+### Step Explanation
 
 This step creates `tsus_uncorrected.dta` by:
 
@@ -590,8 +594,10 @@ log close
 
 ### File Notes
 
+> Expand the sections below for input and output file documentation.
+
 <details>
-<summary>Input: tsus_uncorrected.dta</summary>
+<summary><strong>Input file: tsus_uncorrected.dta</strong></summary>
 
 #### File Role in Workflow
 
@@ -614,7 +620,7 @@ log close
 
 
 <details>
-<summary>Output: tsus_final.dta</summary>
+<summary><strong>Output file: tsus_final.dta</strong></summary>
 
 #### File Role in Workflow
 
@@ -637,7 +643,7 @@ log close
 </details>
 
 
-### How This Step Creates the Output
+### Step Explanation
 
 This step creates `tsus_final.dta` by:
 
@@ -797,8 +803,10 @@ log close
 
 ### File Notes
 
+> Expand the sections below for input and output file documentation.
+
 <details>
-<summary>Input: tsus_final.dta</summary>
+<summary><strong>Input file: tsus_final.dta</strong></summary>
 
 #### File Role in Workflow
 
@@ -822,12 +830,12 @@ log close
 
 
 <details>
-<summary>Output: diagnostic figures and log files</summary>
+<summary><strong>Output files: diagnostic figures and log files</strong></summary>
 
 </details>
 
 
-### How This Step Creates the Output
+### Step Explanation
 
 This step creates diagnostic figures and log output by:
 
@@ -1026,8 +1034,10 @@ The script saves three downstream datasets. First, it saves `tsus_final_weights.
 
 ### File Notes
 
+> Expand the sections below for input and output file documentation.
+
 <details>
-<summary>Input: tsus_final.dta</summary>
+<summary><strong>Input file: tsus_final.dta</strong></summary>
 
 #### File Role in Workflow
 
@@ -1050,13 +1060,13 @@ The script saves three downstream datasets. First, it saves `tsus_final_weights.
 </details>
 
 <details>
-<summary>Input: annual import trade files</summary>
+<summary><strong>Input files: annual import trade files</strong></summary>
 
 </details>
 
 
 <details>
-<summary>Output: tsus_final_weights.dta</summary>
+<summary><strong>Output file: tsus_final_weights.dta</strong></summary>
 
 #### File Role in Workflow
 
@@ -1074,7 +1084,7 @@ The script saves three downstream datasets. First, it saves `tsus_final_weights.
 </details>
 
 <details>
-<summary>Output: trade_appended.dta</summary>
+<summary><strong>Output file: trade_appended.dta</strong></summary>
 
 #### File Role in Workflow
 
@@ -1095,7 +1105,7 @@ The script saves three downstream datasets. First, it saves `tsus_final_weights.
 </details>
 
 <details>
-<summary>Output: tsus_trade_merged.dta</summary>
+<summary><strong>Output file: tsus_trade_merged.dta</strong></summary>
 
 #### File Role in Workflow
 
@@ -1113,7 +1123,7 @@ The script saves three downstream datasets. First, it saves `tsus_final_weights.
 </details>
 
 
-### How This Step Creates the Output
+### Step Explanation
 
 This step creates the merge outputs by:
 
