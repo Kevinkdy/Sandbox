@@ -55,6 +55,8 @@ flowchart LR
 
 Before appending the schedules, the script standardizes key identifier variables. `item` and `suffix` are converted to strings to preserve code formatting, and `flag` and `unit_spec` are converted to strings when Stata imports them as numeric. This prevents type mismatches across schedules without relying on `append, force`.
 
+<br>
+
 ### Inputs
 
 <details>
@@ -89,6 +91,8 @@ The schedules are stored as Excel files before being imported into Stata. Format
 
 </details>
 
+<br>
+
 ### Outputs
 
 <details>
@@ -120,6 +124,8 @@ This step creates `tsus_appended.dta` by:
 - Appending schedules 1-8 into one combined dataset.
 - Standardizing observed suffix formatting issues.
 - Saving the combined result as `tsus_appended.dta`.
+
+<br>
 
 <details>
 <summary>Full commented 01a_append.do code</summary>
@@ -213,6 +219,8 @@ log close
 
 `01b_suffix_fix.do` starts from the appended TSUS dataset, cleans suffix values, creates TSUSA codes, corrects ad valorem duty rates for selected related item groups using 320- and 301-series reference rates, expands suffix-specific rows for item groups 32000-33100, extends the dataset to 1973-1975 using 1972 as a template, cleans specific-duty variables, and saves the uncorrected TSUS dataset.
 
+<br>
+
 ### Inputs
 
 <details>
@@ -231,6 +239,8 @@ log close
 - [`01a_append.do`](../analysis_guide/01a_append.md)
 
 </details>
+
+<br>
 
 ### Outputs
 
@@ -274,6 +284,8 @@ This step creates `tsus_uncorrected.dta` by:
 - Adding 1973-1975 rows by copying the 1972 row structure.
 - Parsing and converting specific-duty fields into numeric values.
 - Saving the suffix-fixed intermediate dataset as `tsus_uncorrected.dta`.
+
+<br>
 
 <details>
 <summary>Full commented 01b_suffix_fix.do code</summary>
@@ -587,6 +599,8 @@ log close
 
 `01c_clean_duties.do` loads the uncorrected TSUS dataset from `01b_suffix_fix.do`, checks duty variables for non-numeric and missing values, converts duty variables to numeric format, applies the existing ad valorem duty correction logic, and saves the final cleaned TSUS dataset.
 
+<br>
+
 ### Inputs
 
 <details>
@@ -610,6 +624,8 @@ log close
 
 
 </details>
+
+<br>
 
 ### Outputs
 
@@ -648,6 +664,8 @@ This step creates `tsus_final.dta` by:
 - Converting duty variables, `tsusa`, and `item` into numeric format where needed.
 - Filling selected 1969-1975 ad valorem duty values with the 1968 rate when later-year values are all zero.
 - Saving the final cleaned tariff dataset as `tsus_final.dta`.
+
+<br>
 
 <details>
 <summary>Full commented 01c_clean_duties.do code</summary>
@@ -794,6 +812,8 @@ log close
 
 `01d_diagnostics.do` loads the final cleaned TSUS dataset, creates histograms, scatter plots, box plots, and diagnostic lists for ad valorem duty rates, and exports figure files. It does not save a new `.dta` dataset.
 
+<br>
+
 ### Inputs
 
 <details>
@@ -819,6 +839,8 @@ log close
 
 </details>
 
+<br>
+
 ### Outputs
 
 <details>
@@ -839,6 +861,8 @@ This step creates diagnostic figures and log output by:
 - Generating a box-and-whisker plot to summarize duty-rate distributions by year.
 - Listing unusual duty-rate patterns for review.
 - Exporting diagnostic figures and saving the diagnostic log.
+
+<br>
 
 <details>
 <summary>Full commented 01d_diagnostics.do code</summary>
@@ -1023,6 +1047,8 @@ log close
 
 The script saves three downstream datasets. First, it saves `tsus_final_weights.dta`, which adds quantity-based `spec_weight` values to selected TSUS items. Second, it saves `trade_appended.dta`, which combines the 1968-1972 import files. Third, it saves `tsus_trade_merged.dta`, which combines the cleaned TSUS tariff data with annual import data by `tsusa` and `year`.
 
+<br>
+
 ### Inputs
 
 <details>
@@ -1052,6 +1078,8 @@ The script saves three downstream datasets. First, it saves `tsus_final_weights.
 <summary>Input: annual import trade files</summary>
 
 </details>
+
+<br>
 
 ### Outputs
 
@@ -1126,6 +1154,8 @@ This step creates the merge outputs by:
 - Saving the appended trade file as `trade_appended.dta`.
 - Merging `tsus_final.dta` with `trade_appended.dta` by `tsusa` and `year`.
 - Saving the final tariff-trade merge output as `tsus_trade_merged.dta`.
+
+<br>
 
 <details>
 <summary>Full commented 02_merge.do code</summary>
