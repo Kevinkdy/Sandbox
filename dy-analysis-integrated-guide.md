@@ -108,7 +108,7 @@ The schedules are stored as Excel files before being imported into Stata. Format
 
 </details>
 
----
+<br>
 
 ### How This Step Creates the Output
 
@@ -256,7 +256,7 @@ log close
 
 </details>
 
----
+<br>
 
 ### How This Step Creates the Output
 
@@ -636,7 +636,7 @@ log close
 
 </details>
 
----
+<br>
 
 ### How This Step Creates the Output
 
@@ -826,7 +826,7 @@ log close
 
 </details>
 
----
+<br>
 
 ### How This Step Creates the Output
 
@@ -1112,7 +1112,7 @@ The script saves three downstream datasets. First, it saves `tsus_final_weights.
 
 </details>
 
----
+<br>
 
 ### How This Step Creates the Output
 
