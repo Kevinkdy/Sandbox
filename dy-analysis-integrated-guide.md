@@ -108,6 +108,8 @@ The schedules are stored as Excel files before being imported into Stata. Format
 
 </details>
 
+---
+
 ### How This Step Creates the Output
 
 This step creates `tsus_appended.dta` by:
@@ -253,6 +255,8 @@ log close
 
 
 </details>
+
+---
 
 ### How This Step Creates the Output
 
@@ -632,6 +636,8 @@ log close
 
 </details>
 
+---
+
 ### How This Step Creates the Output
 
 This step creates `tsus_final.dta` by:
@@ -819,6 +825,8 @@ log close
 <summary>Output: diagnostic figures and log files</summary>
 
 </details>
+
+---
 
 ### How This Step Creates the Output
 
@@ -1103,6 +1111,8 @@ The script saves three downstream datasets. First, it saves `tsus_final_weights.
 - [`02_merge.do`](../analysis_guide/02_merge.md)
 
 </details>
+
+---
 
 ### How This Step Creates the Output
 
