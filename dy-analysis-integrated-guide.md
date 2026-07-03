@@ -1,6 +1,6 @@
 ﻿# Integrated Analysis Guide
 
-This guide explains each `DY--Analysis` do-file, the role of that script in the pipeline, and the input and output data files used or created at each step.
+This guide explains each analysis script, its role in the pipeline, and the input and output data files used or created at each step.
 
 Use this guide to follow how the raw TSUS schedule files are transformed into cleaned tariff data, diagnostic outputs, weighted tariff data, appended trade data, and the final tariff-trade merged dataset.
 
