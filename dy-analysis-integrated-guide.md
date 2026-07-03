@@ -56,8 +56,6 @@ Before appending the schedules, the script standardizes key identifier variables
 
 ### File Notes
 
-> Expand the sections below for input and output file documentation.
-
 <details>
 <summary><strong>Input file: verified_schedule1-8.xlsx</strong></summary>
 
@@ -215,8 +213,6 @@ log close
 
 
 ### File Notes
-
-> Expand the sections below for input and output file documentation.
 
 <details>
 <summary><strong>Input file: tsus_appended.dta</strong></summary>
@@ -592,8 +588,6 @@ log close
 
 ### File Notes
 
-> Expand the sections below for input and output file documentation.
-
 <details>
 <summary><strong>Input file: tsus_uncorrected.dta</strong></summary>
 
@@ -800,8 +794,6 @@ log close
 
 
 ### File Notes
-
-> Expand the sections below for input and output file documentation.
 
 <details>
 <summary><strong>Input file: tsus_final.dta</strong></summary>
@@ -1031,8 +1023,6 @@ The script saves three downstream datasets. First, it saves `tsus_final_weights.
 
 
 ### File Notes
-
-> Expand the sections below for input and output file documentation.
 
 <details>
 <summary><strong>Input file: tsus_final.dta</strong></summary>
