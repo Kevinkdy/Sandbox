@@ -1,10 +1,8 @@
-﻿# DY--Analysis Integrated Guide Draft
+﻿# DY--Analysis Integrated Guide
 
-This draft tests a combined documentation structure for the `DY--Analysis` workflow in `Shafaatyark/Tariffs-RAs`.
+This guide documents the full `DY--Analysis` workflow in one place. It explains each analysis do-file, the role of that script in the pipeline, and the input and output data files used or created at each step.
 
-The main reading path follows the analysis scripts. Input and output data-file notes are kept inside one-level collapsible sections so the workflow stays readable while still preserving the data-guide context.
-
-Source branch used for this draft: `Shafaatyark/Tariffs-RAs`, `DY--Analysis`.
+Use this guide to follow how the raw TSUS schedule files are transformed into cleaned tariff data, diagnostic outputs, weighted tariff data, appended trade data, and the final tariff-trade merged dataset.
 
 ## Table of Contents
 
@@ -1208,14 +1206,4 @@ log close
 ```
 
 </details>
-
----
-
-## Notes on This Draft Structure
-
-- The analysis script remains the main reading unit.
-- Data-file explanations appear only when the reader expands the relevant input or output.
-- This uses only one level of `<details>` blocks.
-- The `data_guide` content is reorganized around the workflow steps instead of being kept as a separate reading path.
-- If this structure works, the same format can be expanded with fuller commented code blocks from the existing `analysis_guide` files.
 
