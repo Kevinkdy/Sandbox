@@ -855,7 +855,43 @@ log close
 </details>
 
 
-**Output files: diagnostic figures and log files**
+<details>
+<summary><strong>Output files: diagnostic figures and log files</strong></summary>
+
+#### File Role in Workflow
+
+The diagnostic figures and log files are review outputs from `01d_diagnostics.do`. They help reviewers inspect the cleaned ad valorem duty rates visually and identify unusual rate patterns that may need manual review. This step does not create a new Stata dataset.
+
+#### Created From
+
+- [`tsus_final.dta`](01d_tsus_final.dta.md)
+
+#### Created By
+
+- [`01d_diagnostics.do`](../analysis_guide/01d_diagnostics.md)
+
+#### Used By
+
+- Manual review of cleaned ad valorem duty rates.
+- Checks for unusual 1968-1972 duty-rate patterns before downstream weighting and trade-data merge steps.
+
+#### What This File Contains
+
+`01d_diagnostics.do` does not create a new Stata dataset. Instead, it exports diagnostic figures and writes log output that help reviewers check whether the cleaned ad valorem duty rates look reasonable.
+
+The diagnostic figures include:
+
+- Histograms for column 1 ad valorem duty rates, `duty1_ad`, in 1968 and 1972.
+- Histograms for column 2 ad valorem duty rates, `duty2_ad`, in 1968 and 1972.
+- After-fix versions of those histograms, so reviewers can compare the distribution before and after duty-rate corrections.
+- Scatter plots comparing 1968 and 1972 ad valorem duty rates for the same TSUSA codes.
+- Reference-line scatter plots that include guide lines such as `y = x`, `y = 0.75x`, and `y = 0.5x`, which make it easier to see whether 1972 rates stayed the same, fell moderately, or fell sharply relative to 1968.
+- A box-and-whisker plot of column 1 ad valorem duty rates by year, covering 1968-1975.
+- An outlier-highlight scatter plot that marks selected unusual TSUSA codes in red for easier visual review.
+
+The diagnostic log also records list outputs for unusual duty-rate patterns, such as cases where 1972 rates are higher than 1968 rates, cases where 1972 rates fall sharply from 1968 rates, and other records that may need manual review.
+
+</details>
 
 
 ### Step Explanation
