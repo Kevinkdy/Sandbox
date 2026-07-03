@@ -104,6 +104,12 @@ The schedules are stored as Excel files before being imported into Stata. Format
 
 - [`01a_append.do`](../analysis_guide/01a_append.md)
 
+#### What This File Contains
+
+- Schedule 1-8 data imported from the verified Excel schedule files.
+- One combined Stata dataset after the individual schedules are appended together.
+- Tariff item codes, suffixes, units, duty values, notes, flags, and year-specific rate columns after the initial import and reshape steps.
+
 </details>
 
 
@@ -229,6 +235,12 @@ log close
 
 - [`01a_append.do`](../analysis_guide/01a_append.md)
 
+#### What This File Contains
+
+- Schedule 1-8 data imported from the verified Excel schedule files.
+- One combined Stata dataset after the individual schedules are appended together.
+- Tariff item codes, suffixes, units, duty values, notes, flags, and year-specific rate columns after the initial import and reshape steps.
+
 </details>
 
 
@@ -251,6 +263,12 @@ log close
 
 - [`01c_clean_duties.do`](../analysis_guide/01c_clean_duties.md)
 
+#### What This File Contains
+
+- Suffix-fixed TSUS tariff data created from the appended schedule dataset.
+- Cleaned `item` and `suffix` fields and constructed `tsusa` codes.
+- 320-331 and 301-302 reference-rate corrections.
+- Expanded suffix-level rows, added 1973-1975 rows, and parsed specific-duty fields before final duty cleaning.
 
 </details>
 
@@ -607,6 +625,12 @@ log close
 
 - [`01c_clean_duties.do`](../analysis_guide/01c_clean_duties.md)
 
+#### What This File Contains
+
+- Suffix-fixed TSUS tariff data created from the appended schedule dataset.
+- Cleaned `item` and `suffix` fields and constructed `tsusa` codes.
+- 320-331 and 301-302 reference-rate corrections.
+- Expanded suffix-level rows, added 1973-1975 rows, and parsed specific-duty fields before final duty cleaning.
 
 </details>
 
@@ -631,6 +655,12 @@ log close
 - [`01d_diagnostics.do`](../analysis_guide/01d_diagnostics.md)
 - [`02_merge.do`](../analysis_guide/02_merge.md)
 
+#### What This File Contains
+
+- Final cleaned TSUS tariff data after duty-variable cleanup.
+- Cleaned tariff schedule structure, suffixes, `tsusa` codes, units, notes, and flags.
+- Numeric duty variables where needed, including selected 1969-1975 ad valorem values filled from the 1968 rate when the later values are all zero.
+- Data ready for diagnostics, figures, weighting, and trade-data merges.
 
 </details>
 
@@ -815,6 +845,12 @@ log close
 - [`01d_diagnostics.do`](../analysis_guide/01d_diagnostics.md)
 - [`02_merge.do`](../analysis_guide/02_merge.md)
 
+#### What This File Contains
+
+- Final cleaned TSUS tariff data after duty-variable cleanup.
+- Cleaned tariff schedule structure, suffixes, `tsusa` codes, units, notes, and flags.
+- Numeric duty variables where needed, including selected 1969-1975 ad valorem values filled from the 1968 rate when the later values are all zero.
+- Data ready for diagnostics, figures, weighting, and trade-data merges.
 
 </details>
 
@@ -1041,6 +1077,12 @@ The script saves three downstream datasets. First, it saves `tsus_final_weights.
 - [`01d_diagnostics.do`](../analysis_guide/01d_diagnostics.md)
 - [`02_merge.do`](../analysis_guide/02_merge.md)
 
+#### What This File Contains
+
+- Final cleaned TSUS tariff data after duty-variable cleanup.
+- Cleaned tariff schedule structure, suffixes, `tsusa` codes, units, notes, and flags.
+- Numeric duty variables where needed, including selected 1969-1975 ad valorem values filled from the 1968 rate when the later values are all zero.
+- Data ready for diagnostics, figures, weighting, and trade-data merges.
 
 </details>
 
@@ -1063,6 +1105,12 @@ The script saves three downstream datasets. First, it saves `tsus_final_weights.
 
 - [`02_merge.do`](../analysis_guide/02_merge.md)
 
+#### What This File Contains
+
+- The cleaned TSUS tariff dataset with quantity-based `spec_weight` values added for selected Schedule 6 items.
+- Product-level weights calculated from 1976 import quantities.
+- One averaged `spec_weight` value per matched `tsusa` code where 1976 import data is available.
+
 </details>
 
 <details>
@@ -1084,6 +1132,12 @@ The script saves three downstream datasets. First, it saves `tsus_final_weights.
 
 - [`02_merge.do`](../analysis_guide/02_merge.md)
 
+#### What This File Contains
+
+- Combined import trade data from the annual 1968-1972 raw import files.
+- Trade observations with `tsusa` converted to numeric format for merging.
+- The trade-data input used later to merge annual import records with the cleaned TSUS tariff data by `tsusa` and `year`.
+
 </details>
 
 <details>
@@ -1101,6 +1155,13 @@ The script saves three downstream datasets. First, it saves `tsus_final_weights.
 #### Created By
 
 - [`02_merge.do`](../analysis_guide/02_merge.md)
+
+#### What This File Contains
+
+- Cleaned TSUS tariff variables from `tsus_final.dta`.
+- Matched import trade variables from `trade_appended.dta`.
+- Observations merged by `tsusa` and `year`, allowing multiple trade records to attach to one tariff-year record.
+- The analysis-ready dataset for work that needs tariff information and import trade data in the same file.
 
 </details>
 
