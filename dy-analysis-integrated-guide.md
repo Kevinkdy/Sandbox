@@ -819,10 +819,7 @@ log close
 </details>
 
 
-<details>
-<summary><strong>Output files: diagnostic figures and log files</strong></summary>
-
-</details>
+**Output files: diagnostic figures and log files**
 
 
 ### Step Explanation
@@ -1047,10 +1044,7 @@ The script saves three downstream datasets. First, it saves `tsus_final_weights.
 
 </details>
 
-<details>
-<summary><strong>Input files: annual import trade files</strong></summary>
-
-</details>
+**Input files: annual import trade files**
 
 
 <details>
