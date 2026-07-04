@@ -76,7 +76,9 @@ This file guide explains the role of the verified schedules as data inputs. The 
 #### What This File Contains
 
 ```markdown
-The verified schedule files contain digitized TSUS schedule information for schedules 1 through 8. They preserve the core fields needed for later cleaning and analysis, including:
+The verified schedule files contain digitized TSUS schedule information for schedules 1
+through 8. They preserve the core fields needed for later cleaning and analysis,
+including:
 
 - tariff item codes;
 - suffix codes;
@@ -85,7 +87,9 @@ The verified schedule files contain digitized TSUS schedule information for sche
 - notes copied or summarized from the source schedules;
 - flags for entries requiring special interpretation.
 
-The schedules are stored as Excel files before being imported into Stata. Formatting choices such as text-formatted cells, preserved suffix values, and note fields matter because the later Stata scripts depend on these fields being readable and consistent.
+The schedules are stored as Excel files before being imported into Stata. Formatting
+choices such as text-formatted cells, preserved suffix values, and note fields matter
+because the later Stata scripts depend on these fields being readable and consistent.
 ```
 </details>
 
@@ -110,7 +114,8 @@ The schedules are stored as Excel files before being imported into Stata. Format
 ```markdown
 - Schedule 1-8 data imported from the verified Excel schedule files.
 - One combined Stata dataset after the individual schedules are appended together.
-- Tariff item codes, suffixes, units, duty values, notes, flags, and year-specific rate columns after the initial import and reshape steps.
+- Tariff item codes, suffixes, units, duty values, notes, flags, and year-specific rate
+  columns after the initial import and reshape steps.
 ```
 </details>
 
@@ -242,7 +247,8 @@ log close
 ```markdown
 - Schedule 1-8 data imported from the verified Excel schedule files.
 - One combined Stata dataset after the individual schedules are appended together.
-- Tariff item codes, suffixes, units, duty values, notes, flags, and year-specific rate columns after the initial import and reshape steps.
+- Tariff item codes, suffixes, units, duty values, notes, flags, and year-specific rate
+  columns after the initial import and reshape steps.
 ```
 </details>
 
@@ -272,7 +278,8 @@ log close
 - Suffix-fixed TSUS tariff data created from the appended schedule dataset.
 - Cleaned `item` and `suffix` fields and constructed `tsusa` codes.
 - 320-331 and 301-302 reference-rate corrections.
-- Expanded suffix-level rows, added 1973-1975 rows, and parsed specific-duty fields before final duty cleaning.
+- Expanded suffix-level rows, added 1973-1975 rows, and parsed specific-duty fields
+  before final duty cleaning.
 ```
 </details>
 
@@ -635,7 +642,8 @@ log close
 - Suffix-fixed TSUS tariff data created from the appended schedule dataset.
 - Cleaned `item` and `suffix` fields and constructed `tsusa` codes.
 - 320-331 and 301-302 reference-rate corrections.
-- Expanded suffix-level rows, added 1973-1975 rows, and parsed specific-duty fields before final duty cleaning.
+- Expanded suffix-level rows, added 1973-1975 rows, and parsed specific-duty fields
+  before final duty cleaning.
 ```
 </details>
 
@@ -665,7 +673,8 @@ log close
 ```markdown
 - Final cleaned TSUS tariff data after duty-variable cleanup.
 - Cleaned tariff schedule structure, suffixes, `tsusa` codes, units, notes, and flags.
-- Numeric duty variables where needed, including selected 1969-1975 ad valorem values filled from the 1968 rate when the later values are all zero.
+- Numeric duty variables where needed, including selected 1969-1975 ad valorem values
+  filled from the 1968 rate when the later values are all zero.
 - Data ready for diagnostics, figures, weighting, and trade-data merges.
 ```
 </details>
@@ -856,7 +865,8 @@ log close
 ```markdown
 - Final cleaned TSUS tariff data after duty-variable cleanup.
 - Cleaned tariff schedule structure, suffixes, `tsusa` codes, units, notes, and flags.
-- Numeric duty variables where needed, including selected 1969-1975 ad valorem values filled from the 1968 rate when the later values are all zero.
+- Numeric duty variables where needed, including selected 1969-1975 ad valorem values
+  filled from the 1968 rate when the later values are all zero.
 - Data ready for diagnostics, figures, weighting, and trade-data merges.
 ```
 </details>
@@ -880,19 +890,27 @@ The diagnostic figures are review outputs from `01d_diagnostics.do`. They help r
 #### What This File Contains
 
 ```markdown
-`01d_diagnostics.do` does not create a new Stata dataset. Instead, it exports diagnostic figures and writes log output that help reviewers check whether the cleaned ad valorem duty rates look reasonable.
+`01d_diagnostics.do` does not create a new Stata dataset. Instead, it exports diagnostic
+figures and writes log output that help reviewers check whether the cleaned ad valorem
+duty rates look reasonable.
 
 The diagnostic figures include:
 
 - Histograms for column 1 ad valorem duty rates, `duty1_ad`, in 1968 and 1972.
 - Histograms for column 2 ad valorem duty rates, `duty2_ad`, in 1968 and 1972.
-- After-fix versions of those histograms, so reviewers can compare the distribution before and after duty-rate corrections.
+- After-fix versions of those histograms, so reviewers can compare the distribution
+  before and after duty-rate corrections.
 - Scatter plots comparing 1968 and 1972 ad valorem duty rates for the same TSUSA codes.
-- Reference-line scatter plots that include guide lines such as `y = x`, `y = 0.75x`, and `y = 0.5x`, which make it easier to see whether 1972 rates stayed the same, fell moderately, or fell sharply relative to 1968.
+- Reference-line scatter plots that include guide lines such as `y = x`, `y = 0.75x`,
+  and `y = 0.5x`, which make it easier to see whether 1972 rates stayed the same, fell
+  moderately, or fell sharply relative to 1968.
 - A box-and-whisker plot of column 1 ad valorem duty rates by year, covering 1968-1975.
-- An outlier-highlight scatter plot that marks selected unusual TSUSA codes in red for easier visual review.
+- An outlier-highlight scatter plot that marks selected unusual TSUSA codes in red for
+  easier visual review.
 
-The diagnostic log also records list outputs for unusual duty-rate patterns, such as cases where 1972 rates are higher than 1968 rates, cases where 1972 rates fall sharply from 1968 rates, and other records that may need manual review.
+The diagnostic log also records list outputs for unusual duty-rate patterns, such as
+cases where 1972 rates are higher than 1968 rates, cases where 1972 rates fall sharply
+from 1968 rates, and other records that may need manual review.
 ```
 </details>
 
@@ -1121,7 +1139,8 @@ The script saves three downstream datasets. First, it saves `tsus_final_weights.
 ```markdown
 - Final cleaned TSUS tariff data after duty-variable cleanup.
 - Cleaned tariff schedule structure, suffixes, `tsusa` codes, units, notes, and flags.
-- Numeric duty variables where needed, including selected 1969-1975 ad valorem values filled from the 1968 rate when the later values are all zero.
+- Numeric duty variables where needed, including selected 1969-1975 ad valorem values
+  filled from the 1968 rate when the later values are all zero.
 - Data ready for diagnostics, figures, weighting, and trade-data merges.
 ```
 </details>
@@ -1149,10 +1168,13 @@ The annual import trade files are the raw trade-data inputs used by `02_merge.do
 
 ```markdown
 - Annual import trade records for 1968 through 1972.
-- Trade variables that are appended into [`trade_appended.dta`](02a_trade_appended.dta.md).
-- `tsusa` values that are converted to numeric format in `02_merge.do` so the appended trade data can be merged with [`tsus_final.dta`](01d_tsus_final.dta.md) by `tsusa` and `year`.
+- Trade variables that are appended into `trade_appended.dta`.
+- `tsusa` values that are converted to numeric format in `02_merge.do` so the appended
+  trade data can be merged with `tsus_final.dta` by `tsusa` and `year`.
 
-Compared with [`trade_appended.dta`](02a_trade_appended.dta.md), these files are still separate annual raw inputs. Compared with [`tsus_trade_merged.dta`](02b_tsus_trade_merged.dta.md), they do not yet include cleaned TSUS tariff rates from [`tsus_final.dta`](01d_tsus_final.dta.md).
+Compared with `trade_appended.dta`, these files are still separate annual raw inputs.
+Compared with `tsus_trade_merged.dta`, they do not yet include cleaned TSUS tariff rates
+from `tsus_final.dta`.
 ```
 </details>
 
@@ -1176,9 +1198,11 @@ Compared with [`trade_appended.dta`](02a_trade_appended.dta.md), these files are
 #### What This File Contains
 
 ```markdown
-- The cleaned TSUS tariff dataset with quantity-based `spec_weight` values added for selected Schedule 6 items.
+- The cleaned TSUS tariff dataset with quantity-based `spec_weight` values added for
+  selected Schedule 6 items.
 - Product-level weights calculated from 1976 import quantities.
-- One averaged `spec_weight` value per matched `tsusa` code where 1976 import data is available.
+- One averaged `spec_weight` value per matched `tsusa` code where 1976 import data is
+  available.
 ```
 </details>
 
@@ -1206,7 +1230,8 @@ Compared with [`trade_appended.dta`](02a_trade_appended.dta.md), these files are
 ```markdown
 - Combined import trade data from the annual 1968-1972 raw import files.
 - Trade observations with `tsusa` converted to numeric format for merging.
-- The trade-data input used later to merge annual import records with the cleaned TSUS tariff data by `tsusa` and `year`.
+- The trade-data input used later to merge annual import records with the cleaned TSUS
+  tariff data by `tsusa` and `year`.
 ```
 </details>
 
@@ -1231,8 +1256,10 @@ Compared with [`trade_appended.dta`](02a_trade_appended.dta.md), these files are
 ```markdown
 - Cleaned TSUS tariff variables from `tsus_final.dta`.
 - Matched import trade variables from `trade_appended.dta`.
-- Observations merged by `tsusa` and `year`, allowing multiple trade records to attach to one tariff-year record.
-- The analysis-ready dataset for work that needs tariff information and import trade data in the same file.
+- Observations merged by `tsusa` and `year`, allowing multiple trade records to attach
+  to one tariff-year record.
+- The analysis-ready dataset for work that needs tariff information and import trade
+  data in the same file.
 ```
 </details>
 
