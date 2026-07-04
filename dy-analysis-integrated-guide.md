@@ -115,7 +115,7 @@ The schedules are stored as Excel files before being imported into Stata. Format
 
 ### What This Do-File Does
 
-This step creates `tsus_appended.dta` by:
+This do-file creates `tsus_appended.dta` by:
 
 - Importing the verified Excel schedule files into Stata.
 - Standardizing key columns so the schedule files can be combined safely.
@@ -275,7 +275,7 @@ log close
 
 ### What This Do-File Does
 
-This step creates `tsus_uncorrected.dta` by:
+This do-file creates `tsus_uncorrected.dta` by:
 
 - Loading the appended schedule dataset, `tsus_appended.dta`.
 - Cleaning the `item` and `suffix` fields by removing extra spaces and known non-code suffix markers.
@@ -667,7 +667,7 @@ log close
 
 ### What This Do-File Does
 
-This step creates `tsus_final.dta` by:
+This do-file creates `tsus_final.dta` by:
 
 - Loading the suffix-fixed intermediate dataset, `tsus_uncorrected.dta`.
 - Checking duty variables for missing and non-numeric values.
@@ -860,7 +860,7 @@ log close
 
 #### File Role in Workflow
 
-The diagnostic figures are review outputs from `01d_diagnostics.do`. They help reviewers inspect the cleaned ad valorem duty rates visually and identify unusual rate patterns that may need manual review. This step does not create a new Stata dataset.
+The diagnostic figures are review outputs from `01d_diagnostics.do`. They help reviewers inspect the cleaned ad valorem duty rates visually and identify unusual rate patterns that may need manual review. This do-file does not create a new Stata dataset.
 
 #### Created From
 
@@ -896,7 +896,7 @@ The diagnostic log also records list outputs for unusual duty-rate patterns, suc
 
 ### What This Do-File Does
 
-This step creates diagnostic figures and log output by:
+This do-file creates diagnostic figures and log output by:
 
 - Loading the final cleaned tariff dataset, `tsus_final.dta`.
 - Creating histograms for column 1 and column 2 ad valorem duty rates.
@@ -1204,7 +1204,7 @@ The script saves three downstream datasets. First, it saves `tsus_final_weights.
 
 ### What This Do-File Does
 
-This step creates the merge outputs by:
+This do-file creates the merge outputs by:
 
 - Loading the final cleaned tariff dataset, `tsus_final.dta`.
 - Using `Imports-1976.dta` to calculate `spec_weight` for selected Schedule 6 items that need the specific-weight adjustment.
