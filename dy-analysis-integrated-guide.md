@@ -113,7 +113,7 @@ The schedules are stored as Excel files before being imported into Stata. Format
 </details>
 
 
-### Step Explanation
+### What This Do-File Does
 
 This step creates `tsus_appended.dta` by:
 
@@ -273,7 +273,7 @@ log close
 </details>
 
 
-### Step Explanation
+### What This Do-File Does
 
 This step creates `tsus_uncorrected.dta` by:
 
@@ -665,7 +665,7 @@ log close
 </details>
 
 
-### Step Explanation
+### What This Do-File Does
 
 This step creates `tsus_final.dta` by:
 
@@ -894,7 +894,7 @@ The diagnostic log also records list outputs for unusual duty-rate patterns, suc
 </details>
 
 
-### Step Explanation
+### What This Do-File Does
 
 This step creates diagnostic figures and log output by:
 
@@ -1202,7 +1202,7 @@ The script saves three downstream datasets. First, it saves `tsus_final_weights.
 </details>
 
 
-### Step Explanation
+### What This Do-File Does
 
 This step creates the merge outputs by:
 
