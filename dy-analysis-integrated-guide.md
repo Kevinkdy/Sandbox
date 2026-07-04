@@ -856,11 +856,11 @@ log close
 
 
 <details>
-<summary><strong>Output files: diagnostic figures and log files</strong></summary>
+<summary><strong>Output files: diagnostic figures</strong></summary>
 
 #### File Role in Workflow
 
-The diagnostic figures and log files are review outputs from `01d_diagnostics.do`. They help reviewers inspect the cleaned ad valorem duty rates visually and identify unusual rate patterns that may need manual review. This step does not create a new Stata dataset.
+The diagnostic figures are review outputs from `01d_diagnostics.do`. They help reviewers inspect the cleaned ad valorem duty rates visually and identify unusual rate patterns that may need manual review. This step does not create a new Stata dataset.
 
 #### Created From
 
