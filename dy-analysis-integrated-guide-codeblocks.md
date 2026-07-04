@@ -298,13 +298,83 @@ This file is not the final cleaned tariff dataset. It is an intermediate file us
 
 #### What This File Contains
 
-```markdown
+````markdown
 - Suffix-fixed TSUS tariff data created from the appended schedule dataset.
 - Cleaned `item` and `suffix` fields and constructed `tsusa` codes.
 - 320-331 and 301-302 reference-rate corrections.
 - Expanded suffix-level rows, added 1973-1975 rows, and parsed specific-duty fields
   before final duty cleaning.
+
+
+## How This File Is Created
+
+`tsus_uncorrected.dta` is created by running [`01b_suffix_fix.do`](../analysis_guide/01b_suffix_fix.md) on [`tsus_appended.dta`](01b_tsus_appended.dta.md). This step turns the appended schedule data into the suffix-fixed TSUS tariff dataset.
+
+The suffix-fixing step also handles the reference-rate cases. For the 320-331 series, item 320 is the base group, and rates for 321-331 are calculated from the corresponding 320 rate plus the additional rate assigned to each series:
+
+```text
+321-331 rate = corresponding 320 base rate + series-specific additional rate
 ```
+
+For the 301-302 series, item 301 is the base group, and the 302 rate is calculated from the corresponding 301 rate plus the additional 302 rate:
+
+```text
+302 rate = corresponding 301 base rate + 302 additional rate
+```
+
+The corresponding base rate means the rate with the same suffix code.
+
+The following tables are illustrative examples, not actual data from the file. They show how reference-rate entries are converted before the final duty-cleaning step.
+
+320-series example:
+
+Before suffix-fixing code:
+
+| item | suffix | duty rate shown in source |
+|---:|---:|---|
+| 320 | 10 | 5 |
+| 321 | 10 | 2 |
+| 322 | 10 | 3 |
+| 331 | 10 | 6 |
+
+After suffix-fixing code:
+
+| item | suffix | duty1_ad |
+|---:|---:|---:|
+| 320 | 10 | 5 |
+| 321 | 10 | 7 |
+| 322 | 10 | 8 |
+| 331 | 10 | 11 |
+
+301-series example:
+
+Before suffix-fixing code:
+
+| item | suffix | duty rate shown in source |
+|---:|---:|---|
+| 301 | 20 | 4 |
+| 302 | 20 | 1.5 |
+
+After suffix-fixing code:
+
+| item | suffix | duty1_ad |
+|---:|---:|---:|
+| 301 | 20 | 4 |
+| 302 | 20 | 5.5 |
+
+By the time this file is created:
+
+- leading and trailing spaces have been removed from `item` and `suffix`;
+- known non-code suffix markers, specifically `"."` and `"1/"`, have been removed;
+- remaining suffix values have been checked to make sure they contain only digits or are blank;
+- `tsusa` codes have been created by combining the 5-digit item code with the suffix code, and recreated after suffix expansion;
+- 320-331 and 301-302 reference-rate cases have been handled;
+- rows that apply to multiple suffix codes have been expanded so that duty rates are recorded at the correct suffix level;
+- 1973-1975 rows have been added by copying the 1972 row structure;
+- specific-duty fields have been parsed and converted into numeric values after the suffix expansion step.
+
+This file is the suffix-fixed tariff dataset in the workflow. Unlike [`tsus_appended.dta`](01b_tsus_appended.dta.md), it is no longer just the combined import of schedules 1-8; it includes the suffix corrections, TSUSA construction, rate fixes, and row expansions needed before final duty cleaning.
+````
 </details>
 
 
