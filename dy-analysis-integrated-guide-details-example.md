@@ -1,192 +1,180 @@
-# Example: More Readable Collapsible File Notes
+# Example: Readable `01a_append.do` File Notes
 
-This file shows one possible way to make the collapsible sections in
-`dy-analysis-integrated-guide-readable.md` easier to scan.
+This file shows how the `01a_append.do` section in
+`dy-analysis-integrated-guide-readable.md` could look if the collapsible file notes
+were rewritten for easier scanning.
 
-The goal is not to remove detail. The goal is to make each expanded section start with
-the most useful information, then move into longer explanation only when needed.
+The example keeps the original meaning, but changes the order and formatting:
 
-## Pattern
+- the collapsed line explains why the file matters;
+- each expanded section starts with a `Quick View` table;
+- longer explanation is broken into short named sections;
+- bullets are normal Markdown, not text inside a code block.
 
-Use this structure for each file note:
+---
 
-```md
+## 01a_append.do
+
+### Purpose
+
+`01a_append.do` imports the verified TSUS schedule Excel files, standardizes key
+variables, reshapes year-specific duty columns into long format, appends schedules 1
+through 8, fixes observed suffix formatting issues, and saves the combined result as
+`tsus_appended.dta`.
+
+The main point of this step is to turn separate verified schedule spreadsheets into
+one Stata dataset that the later suffix-cleaning step can use.
+
+### File Notes
+
 <details>
-<summary><strong>Input: filename.dta</strong> - one-line reason this file matters</summary>
+<summary><strong>Input: verified_schedule1-8.xlsx</strong> - verified TSUS schedule spreadsheets imported by 01a_append.do</summary>
 
 #### Quick View
 
 | Field | Details |
 |---|---|
-| Role | Short workflow role |
-| Created from | `previous_file.dta` |
-| Created by | `script.do` |
-| Used by | `next_script.do` |
+| Role | First structured TSUS data input |
+| Source material | Original TSUS PDF schedules |
+| Created by | Manual digitization and verification |
+| Used by | `01a_append.do` |
+| Output after this step | `tsus_appended.dta` |
 
 #### What It Contains
 
-- Short bullet.
-- Short bullet.
-- Short bullet.
+- Digitized TSUS schedule information for schedules 1 through 8.
+- Tariff item codes and suffix codes.
+- Specific-duty and ad valorem duty fields.
+- Unit information, notes, and flags.
+- Year-specific duty columns that later get reshaped into long format.
 
-#### Notes
+#### Why Formatting Matters
 
-One or two short paragraphs for interpretation, edge cases, or examples.
+These files are Excel inputs, so cell formatting can affect what Stata reads. Fields
+such as `item`, `suffix`, `flag`, and `unit_spec` need to stay readable and consistent
+across schedules before the files are appended.
+
+For example, suffix values like `00` and `05` must keep their leading zeroes. If Stata
+imports them as numeric values, later TSUSA code construction can become harder or
+incorrect.
+
+#### Link To Source Rules
+
+Detailed rules for entering, interpreting, and checking the TSUS schedule information
+belong in the source/data conventions guide. This file note only explains how the
+verified schedule files function in the analysis workflow.
 
 </details>
-```
-
-## Example 1: Short Input File Note
-
-This is how a compact file note could look for `tsus_final.dta`.
 
 <details>
-<summary><strong>Input: tsus_final.dta</strong> - cleaned TSUS tariff data used by diagnostics and merge steps</summary>
+<summary><strong>Output: tsus_appended.dta</strong> - combined schedule dataset created before suffix cleaning</summary>
 
 #### Quick View
 
 | Field | Details |
 |---|---|
-| Role | Final cleaned TSUS tariff dataset |
-| Created from | `tsus_uncorrected.dta` |
-| Created by | `01c_clean_duties.do` |
-| Used by | `01d_diagnostics.do`, `02_merge.do` |
+| Role | First combined Stata dataset in the TSUS pipeline |
+| Created from | `verified_schedule1-8.xlsx` |
+| Created by | `01a_append.do` |
+| Used by | `01b_suffix_fix.do` |
+| Next output | `tsus_uncorrected.dta` |
 
 #### What It Contains
 
-- Cleaned tariff schedule structure.
-- Cleaned suffixes and `tsusa` codes.
-- Duty variables prepared for diagnostics, weighting, and trade-data merges.
-- Notes, units, and flags preserved from the earlier TSUS cleaning steps.
-
-#### Why It Matters
-
-`tsus_final.dta` is the main cleaned TSUS file. Diagnostics use it to check tariff-rate
-patterns, and `02_merge.do` uses it as the tariff-side input for the trade merge.
-
-</details>
-
-## Example 2: Longer Output File Note
-
-This is how a longer file note could look for `tsus_trade_merged.dta`. The explanation
-is still detailed, but it is divided into sections so readers can stop after the part
-they need.
-
-<details>
-<summary><strong>Output: tsus_trade_merged.dta</strong> - analysis-ready tariff and trade dataset</summary>
-
-#### Quick View
-
-| Field | Details |
-|---|---|
-| Role | Final merged dataset for tariff-trade analysis |
-| Created from | `tsus_final.dta`, `trade_appended.dta` |
-| Created by | `02_merge.do` |
-| Merge keys | `tsusa`, `year` |
-| Merge type | `1:m`, with tariff data as the master file |
-
-#### What It Contains
-
-- Cleaned TSUS tariff variables from `tsus_final.dta`.
-- Import trade variables from `trade_appended.dta`.
-- Observations matched by `tsusa` and `year`.
-- Multiple trade records can attach to one tariff-year record.
+- Schedule 1 through 8 data in one combined Stata file.
+- Tariff item codes, suffixes, units, notes, flags, and duty fields.
+- One observation per item, suffix, and year after the reshape step.
+- Standardized suffix values for observed formatting issues.
 
 #### How It Is Created
 
-`02_merge.do` first prepares the cleaned tariff data and the appended trade data so
-both files use the same merge keys. It then loads `tsus_final.dta` as the master file
-and merges in `trade_appended.dta`.
+`01a_append.do` loops over schedules 1 through 8. For each schedule, it imports the
+verified Excel file, standardizes variable types, reshapes the year-specific duty
+columns, and appends the schedule into a temporary combined dataset.
+
+After all schedules are appended, the script drops empty variables, fixes observed
+suffix formatting issues, sorts by item code, and saves the combined result.
+
+#### What This File Is Not
+
+`tsus_appended.dta` is not the final cleaned tariff dataset. It is an intermediate file
+created before suffix corrections, TSUSA code construction, reference-rate fixes, row
+expansion, and final duty-variable cleaning.
+
+</details>
+
+### What This Do-File Does
+
+This do-file creates `tsus_appended.dta` by:
+
+- importing the verified Excel schedule files into Stata;
+- converting key variables to strings so schedule files can be appended safely;
+- reshaping 1968-1972 duty columns from wide format to long format;
+- appending schedules 1 through 8 into one combined dataset;
+- dropping variables that contain no data;
+- standardizing observed suffix formatting issues, such as `0` to `00` and `5` to `05`;
+- saving the combined dataset as `tsus_appended.dta`.
+
+### Main Workflow In This Script
+
+| Step | What happens | Why it matters |
+|---|---|---|
+| Import | Each verified schedule Excel file is loaded into Stata | Brings schedules 1-8 into the analysis pipeline |
+| Type standardization | `item`, `suffix`, `flag`, and `unit_spec` are converted when needed | Prevents append problems and preserves code formatting |
+| Duty conversion | Duty columns for 1968-1972 are converted to strings | Keeps mixed duty formats readable before later cleaning |
+| Reshape | Year-specific duty columns become long-format observations | Creates one row per item, suffix, and year |
+| Append | Each schedule is added to the combined temporary file | Produces one dataset across all schedules |
+| Suffix cleanup | Observed one-digit suffix problems are standardized | Prepares suffix values for later TSUSA construction |
+| Save | The combined file is saved as `tsus_appended.dta` | Creates the input for `01b_suffix_fix.do` |
+
+### Code Sample
+
+This is the core loop structure in simplified form:
 
 ```stata
-use "$data\Stata Files\tsus_final.dta", clear
+tempfile combined
+local first = 1
 
-merge 1:m tsusa year using "$data\Stata Files\trade_appended.dta"
+forvalues schedule = 1/8 {
 
-save "$data\Stata Files\tsus_trade_merged.dta", replace
+    import excel "$data\Raw Files\TSUS_data\verified_schedule`schedule'_test.xlsx", ///
+        cellrange(A2) firstrow clear
+
+    tostring item suffix, replace
+
+    capture confirm numeric variable flag
+    if !_rc {
+        tostring flag, replace
+    }
+
+    capture confirm numeric variable unit_spec
+    if !_rc {
+        tostring unit_spec, replace
+    }
+
+    forvalues year = 1968/1972 {
+        tostring duty1_spec`year' duty2_spec`year' duty1_ad`year' duty2_ad`year', ///
+            replace force
+    }
+
+    reshape long duty1_spec duty1_ad duty2_spec duty2_ad, ///
+        i(item suffix units unit_spec flag notes) j(year)
+
+    if `first' {
+        save `combined'
+        local first = 0
+    }
+    else {
+        append using `combined'
+        save `combined', replace
+    }
+}
 ```
 
-#### How To Read The Merge
+### Short Reader-Facing Explanation
 
-The `1:m` merge means each cleaned tariff observation can match multiple trade
-observations for the same `tsusa` and `year`.
-
-| Source file | Meaning |
-|---|---|
-| `tsus_final.dta` | One cleaned tariff record for a tariff item and year |
-| `trade_appended.dta` | One or more import trade records for the same tariff item and year |
-| `tsus_trade_merged.dta` | The tariff record repeated across the matching trade records |
-
-#### Small Example
-
-`tsus_final.dta` before merge:
-
-| tsusa | year | tariff_rate |
-|---:|---:|---:|
-| 6012800 | 1968 | 10 |
-
-`trade_appended.dta` before merge:
-
-| tsusa | year | city_code | import_value |
-|---:|---:|---:|---:|
-| 6012800 | 1968 | 101 | 2500 |
-| 6012800 | 1968 | 205 | 1800 |
-| 6012800 | 1968 | 318 | 950 |
-
-`tsus_trade_merged.dta` after merge:
-
-| tsusa | year | tariff_rate | city_code | import_value |
-|---:|---:|---:|---:|---:|
-| 6012800 | 1968 | 10 | 101 | 2500 |
-| 6012800 | 1968 | 10 | 205 | 1800 |
-| 6012800 | 1968 | 10 | 318 | 950 |
-
-#### Bottom Line
-
-Compared with `tsus_final.dta`, this file adds import trade data. Compared with
-`trade_appended.dta`, this file adds cleaned TSUS tariff information.
-
-</details>
-
-## Example 3: Annual Trade Inputs Without Repeating The Same Long Link
-
-For repeated raw files, avoid listing the same long source link five times. Use one
-source-folder link and list the annual files plainly.
-
-<details>
-<summary><strong>Inputs: Imports-1968.dta through Imports-1972.dta</strong> - annual trade files appended by 02_merge.do</summary>
-
-#### Quick View
-
-| Field | Details |
-|---|---|
-| Role | Raw annual trade inputs |
-| Years | 1968, 1969, 1970, 1971, 1972 |
-| Created by | External trade-data source |
-| Used by | `02_merge.do` |
-| Output created | `trade_appended.dta` |
-
-#### Input Files
-
-- `Imports-1968.dta`
-- `Imports-1969.dta`
-- `Imports-1970.dta`
-- `Imports-1971.dta`
-- `Imports-1972.dta`
-
-#### What They Become
-
-`02_merge.do` appends these separate annual files into `trade_appended.dta`. The
-appended trade file is then merged with `tsus_final.dta` to create
-`tsus_trade_merged.dta`.
-
-</details>
-
-## Why This Reads Better
-
-- The collapsed line tells readers whether the section is worth opening.
-- The first expanded item is always a `Quick View` table.
-- Long explanations are broken into named subsections.
-- Bullets are shown as normal Markdown, not inside a code block.
-- Repeated links and repeated wording are reduced.
+In plain language, `01a_append.do` takes the separate verified schedule spreadsheets
+and turns them into one Stata file. It does not yet resolve all tariff-code or
+duty-rate issues. Its job is to make a consistent combined starting point for the next
+script, `01b_suffix_fix.do`.
 
