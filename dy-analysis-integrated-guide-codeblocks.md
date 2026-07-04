@@ -59,7 +59,6 @@ Before appending the schedules, the script standardizes key identifier variables
 <details>
 <summary><strong>Input file: verified_schedule1-8.xlsx</strong></summary>
 
-```markdown
 #### File Role in Workflow
 
 `verified_schedule1-8.xlsx` represents the verified Excel schedule files created from the original TSUS PDFs. These files are the first structured data input in the TSUS workflow: they translate the raw tariff schedules into rows and columns that can be imported by [`01a_append.do`](../analysis_guide/01a_append.md).
@@ -76,6 +75,7 @@ This file guide explains the role of the verified schedules as data inputs. The 
 
 #### What This File Contains
 
+```markdown
 The verified schedule files contain digitized TSUS schedule information for schedules 1 through 8. They preserve the core fields needed for later cleaning and analysis, including:
 
 - tariff item codes;
@@ -93,7 +93,6 @@ The schedules are stored as Excel files before being imported into Stata. Format
 <details>
 <summary><strong>Output file: tsus_appended.dta</strong></summary>
 
-```markdown
 #### File Role in Workflow
 
 `tsus_appended.dta` is the intermediate Stata dataset created from the verified Excel schedule files. It combines schedules 1-8 after import, type standardization, reshape, and append, and prepares the data for suffix cleaning and TSUSA code construction in [`01b_suffix_fix.do`](../analysis_guide/01b_suffix_fix.md).
@@ -108,6 +107,7 @@ The schedules are stored as Excel files before being imported into Stata. Format
 
 #### What This File Contains
 
+```markdown
 - Schedule 1-8 data imported from the verified Excel schedule files.
 - One combined Stata dataset after the individual schedules are appended together.
 - Tariff item codes, suffixes, units, duty values, notes, flags, and year-specific rate columns after the initial import and reshape steps.
@@ -225,7 +225,6 @@ log close
 <details>
 <summary><strong>Input file: tsus_appended.dta</strong></summary>
 
-```markdown
 #### File Role in Workflow
 
 `tsus_appended.dta` is the intermediate Stata dataset created from the verified Excel schedule files. It combines schedules 1-8 after import, type standardization, reshape, and append, and prepares the data for suffix cleaning and TSUSA code construction in [`01b_suffix_fix.do`](../analysis_guide/01b_suffix_fix.md).
@@ -240,6 +239,7 @@ log close
 
 #### What This File Contains
 
+```markdown
 - Schedule 1-8 data imported from the verified Excel schedule files.
 - One combined Stata dataset after the individual schedules are appended together.
 - Tariff item codes, suffixes, units, duty values, notes, flags, and year-specific rate columns after the initial import and reshape steps.
@@ -250,7 +250,6 @@ log close
 <details>
 <summary><strong>Output file: tsus_uncorrected.dta</strong></summary>
 
-```markdown
 #### File Role in Workflow
 
 `tsus_uncorrected.dta` is the suffix-stage intermediate dataset created after suffix cleaning, TSUSA code creation, 320-331 and 301-302 reference-rate corrections, suffix-row expansion, and year extension. In this workflow, "uncorrected" means that the dataset has not yet gone through the final duty-variable cleaning step in [`01c_clean_duties.do`](../analysis_guide/01c_clean_duties.md).
@@ -269,6 +268,7 @@ log close
 
 #### What This File Contains
 
+```markdown
 - Suffix-fixed TSUS tariff data created from the appended schedule dataset.
 - Cleaned `item` and `suffix` fields and constructed `tsusa` codes.
 - 320-331 and 301-302 reference-rate corrections.
@@ -613,7 +613,6 @@ log close
 <details>
 <summary><strong>Input file: tsus_uncorrected.dta</strong></summary>
 
-```markdown
 #### File Role in Workflow
 
 `tsus_uncorrected.dta` is the suffix-stage intermediate dataset created after suffix cleaning, TSUSA code creation, 320-331 and 301-302 reference-rate corrections, suffix-row expansion, and year extension. In this workflow, "uncorrected" means that the dataset has not yet gone through the final duty-variable cleaning step in [`01c_clean_duties.do`](../analysis_guide/01c_clean_duties.md).
@@ -632,6 +631,7 @@ log close
 
 #### What This File Contains
 
+```markdown
 - Suffix-fixed TSUS tariff data created from the appended schedule dataset.
 - Cleaned `item` and `suffix` fields and constructed `tsusa` codes.
 - 320-331 and 301-302 reference-rate corrections.
@@ -643,7 +643,6 @@ log close
 <details>
 <summary><strong>Output file: tsus_final.dta</strong></summary>
 
-```markdown
 #### File Role in Workflow
 
 `tsus_final.dta` is the final cleaned TSUS tariff dataset created after [`tsus_uncorrected.dta`](01c_tsus_uncorrected.dta.md) has gone through final duty-variable cleanup. It inherits the suffix, TSUSA, and reference-rate corrections created in [`01b_suffix_fix.do`](../analysis_guide/01b_suffix_fix.md), then applies the final cleaning needed for diagnostics, figures, weights, and trade-data merges.
@@ -663,6 +662,7 @@ log close
 
 #### What This File Contains
 
+```markdown
 - Final cleaned TSUS tariff data after duty-variable cleanup.
 - Cleaned tariff schedule structure, suffixes, `tsusa` codes, units, notes, and flags.
 - Numeric duty variables where needed, including selected 1969-1975 ad valorem values filled from the 1968 rate when the later values are all zero.
@@ -834,7 +834,6 @@ log close
 <details>
 <summary><strong>Input file: tsus_final.dta</strong></summary>
 
-```markdown
 #### File Role in Workflow
 
 `tsus_final.dta` is the final cleaned TSUS tariff dataset created after [`tsus_uncorrected.dta`](01c_tsus_uncorrected.dta.md) has gone through final duty-variable cleanup. It inherits the suffix, TSUSA, and reference-rate corrections created in [`01b_suffix_fix.do`](../analysis_guide/01b_suffix_fix.md), then applies the final cleaning needed for diagnostics, figures, weights, and trade-data merges.
@@ -854,6 +853,7 @@ log close
 
 #### What This File Contains
 
+```markdown
 - Final cleaned TSUS tariff data after duty-variable cleanup.
 - Cleaned tariff schedule structure, suffixes, `tsusa` codes, units, notes, and flags.
 - Numeric duty variables where needed, including selected 1969-1975 ad valorem values filled from the 1968 rate when the later values are all zero.
@@ -865,7 +865,6 @@ log close
 <details>
 <summary><strong>Output files: diagnostic figures</strong></summary>
 
-```markdown
 #### File Role in Workflow
 
 The diagnostic figures are review outputs from `01d_diagnostics.do`. They help reviewers inspect the cleaned ad valorem duty rates visually and identify unusual rate patterns that may need manual review. This do-file does not create a new Stata dataset.
@@ -880,6 +879,7 @@ The diagnostic figures are review outputs from `01d_diagnostics.do`. They help r
 
 #### What This File Contains
 
+```markdown
 `01d_diagnostics.do` does not create a new Stata dataset. Instead, it exports diagnostic figures and writes log output that help reviewers check whether the cleaned ad valorem duty rates look reasonable.
 
 The diagnostic figures include:
@@ -1099,7 +1099,6 @@ The script saves three downstream datasets. First, it saves `tsus_final_weights.
 <details>
 <summary><strong>Input file: tsus_final.dta</strong></summary>
 
-```markdown
 #### File Role in Workflow
 
 `tsus_final.dta` is the final cleaned TSUS tariff dataset created after [`tsus_uncorrected.dta`](01c_tsus_uncorrected.dta.md) has gone through final duty-variable cleanup. It inherits the suffix, TSUSA, and reference-rate corrections created in [`01b_suffix_fix.do`](../analysis_guide/01b_suffix_fix.md), then applies the final cleaning needed for diagnostics, figures, weights, and trade-data merges.
@@ -1119,6 +1118,7 @@ The script saves three downstream datasets. First, it saves `tsus_final_weights.
 
 #### What This File Contains
 
+```markdown
 - Final cleaned TSUS tariff data after duty-variable cleanup.
 - Cleaned tariff schedule structure, suffixes, `tsusa` codes, units, notes, and flags.
 - Numeric duty variables where needed, including selected 1969-1975 ad valorem values filled from the 1968 rate when the later values are all zero.
@@ -1129,7 +1129,6 @@ The script saves three downstream datasets. First, it saves `tsus_final_weights.
 <details>
 <summary><strong>Input files: annual import trade files</strong></summary>
 
-```markdown
 #### File Role in Workflow
 
 The annual import trade files are the raw trade-data inputs used by `02_merge.do` to create [`trade_appended.dta`](02a_trade_appended.dta.md). They provide the 1968-1972 import records that later get combined into one Stata dataset and merged with the cleaned TSUS tariff data.
@@ -1148,6 +1147,7 @@ The annual import trade files are the raw trade-data inputs used by `02_merge.do
 
 #### What This File Contains
 
+```markdown
 - Annual import trade records for 1968 through 1972.
 - Trade variables that are appended into [`trade_appended.dta`](02a_trade_appended.dta.md).
 - `tsusa` values that are converted to numeric format in `02_merge.do` so the appended trade data can be merged with [`tsus_final.dta`](01d_tsus_final.dta.md) by `tsusa` and `year`.
@@ -1160,7 +1160,6 @@ Compared with [`trade_appended.dta`](02a_trade_appended.dta.md), these files are
 <details>
 <summary><strong>Output file: tsus_final_weights.dta</strong></summary>
 
-```markdown
 #### File Role in Workflow
 
 `tsus_final_weights.dta` is an intermediate weighted tariff file created by calculating quantity-based `spec_weight` values from 1976 import data and merging those weights onto the cleaned TSUS dataset.
@@ -1176,6 +1175,7 @@ Compared with [`trade_appended.dta`](02a_trade_appended.dta.md), these files are
 
 #### What This File Contains
 
+```markdown
 - The cleaned TSUS tariff dataset with quantity-based `spec_weight` values added for selected Schedule 6 items.
 - Product-level weights calculated from 1976 import quantities.
 - One averaged `spec_weight` value per matched `tsusa` code where 1976 import data is available.
@@ -1185,7 +1185,6 @@ Compared with [`trade_appended.dta`](02a_trade_appended.dta.md), these files are
 <details>
 <summary><strong>Output file: trade_appended.dta</strong></summary>
 
-```markdown
 #### File Role in Workflow
 
 `trade_appended.dta` is the combined import trade dataset created from the 1968-1972 raw import files. It is used as the trade-data input for creating [`tsus_trade_merged.dta`](02b_tsus_trade_merged.dta.md).
@@ -1204,6 +1203,7 @@ Compared with [`trade_appended.dta`](02a_trade_appended.dta.md), these files are
 
 #### What This File Contains
 
+```markdown
 - Combined import trade data from the annual 1968-1972 raw import files.
 - Trade observations with `tsusa` converted to numeric format for merging.
 - The trade-data input used later to merge annual import records with the cleaned TSUS tariff data by `tsusa` and `year`.
@@ -1213,7 +1213,6 @@ Compared with [`trade_appended.dta`](02a_trade_appended.dta.md), these files are
 <details>
 <summary><strong>Output file: tsus_trade_merged.dta</strong></summary>
 
-```markdown
 #### File Role in Workflow
 
 `tsus_trade_merged.dta` is the analysis-ready merge output that combines cleaned TSUS tariff data with appended 1968-1972 import trade files by `tsusa` and `year`.
@@ -1229,6 +1228,7 @@ Compared with [`trade_appended.dta`](02a_trade_appended.dta.md), these files are
 
 #### What This File Contains
 
+```markdown
 - Cleaned TSUS tariff variables from `tsus_final.dta`.
 - Matched import trade variables from `trade_appended.dta`.
 - Observations merged by `tsusa` and `year`, allowing multiple trade records to attach to one tariff-year record.
