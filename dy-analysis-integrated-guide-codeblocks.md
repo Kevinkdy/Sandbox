@@ -1,4 +1,4 @@
-# Integrated Analysis Guide
+# Analysis Guide
 
 This guide explains each analysis script, its role in the pipeline, and the input and output data files used or created at each step.
 
