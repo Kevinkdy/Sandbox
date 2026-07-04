@@ -116,6 +116,19 @@ because the later Stata scripts depend on these fields being readable and consis
 - One combined Stata dataset after the individual schedules are appended together.
 - Tariff item codes, suffixes, units, duty values, notes, flags, and year-specific rate
   columns after the initial import and reshape steps.
+
+By the time this file is created:
+
+- the verified Excel schedules have been imported into Stata;
+- schedule-level files have been combined into one dataset;
+- key columns have been standardized so they can be appended together;
+- year-specific duty columns have been reshaped into a long format;
+- the data is ready for suffix cleaning and TSUSA code construction in
+  `01b_suffix_fix.do`.
+
+This file is not the final cleaned tariff dataset. It is an intermediate file used
+before suffix corrections, TSUSA construction, reference-rate fixes, and row expansion
+are applied.
 ```
 </details>
 
@@ -249,6 +262,19 @@ log close
 - One combined Stata dataset after the individual schedules are appended together.
 - Tariff item codes, suffixes, units, duty values, notes, flags, and year-specific rate
   columns after the initial import and reshape steps.
+
+By the time this file is created:
+
+- the verified Excel schedules have been imported into Stata;
+- schedule-level files have been combined into one dataset;
+- key columns have been standardized so they can be appended together;
+- year-specific duty columns have been reshaped into a long format;
+- the data is ready for suffix cleaning and TSUSA code construction in
+  `01b_suffix_fix.do`.
+
+This file is not the final cleaned tariff dataset. It is an intermediate file used
+before suffix corrections, TSUSA construction, reference-rate fixes, and row expansion
+are applied.
 ```
 </details>
 
@@ -1260,6 +1286,84 @@ from `tsus_final.dta`.
   to one tariff-year record.
 - The analysis-ready dataset for work that needs tariff information and import trade
   data in the same file.
+
+`tsus_trade_merged.dta` is created near the end of `02_merge.do`.
+
+The file is built after two inputs are ready:
+
+- `tsus_final.dta`
+  - This is the cleaned TSUS tariff dataset.
+  - It contains the tariff schedule structure, cleaned suffixes, `tsusa` codes, duty
+    rates, units, notes, and flags.
+- `trade_appended.dta`
+  - This is the combined import trade dataset for 1968-1972.
+  - It is created earlier in `02_merge.do` by loading `Imports-1968.dta` and appending
+    the 1969-1972 import files.
+
+Before the final merge, `02_merge.do` prepares the data so the two files can be
+matched correctly:
+
+- `tsusa` is converted to a numeric variable so the tariff data and trade data use the
+  same merge key format.
+- The annual trade files have already been combined into `trade_appended.dta`.
+- `tsus_final.dta` is used as the cleaned tariff base for the merge.
+
+The final merge is run with:
+
+use "$data\Stata Files\tsus_final.dta", clear
+
+merge 1:m tsusa year using "$data\Stata Files\trade_appended.dta"
+
+save "$data\Stata Files\tsus_trade_merged.dta", replace
+
+This is a `1:m` merge because `tsus_final.dta` is the master file in this step. For
+each `tsusa`-`year` combination, it provides the cleaned tariff schedule information.
+`trade_appended.dta` is the using file, and it can contain multiple import trade
+records for the same `tsusa`-`year` combination. The merge therefore attaches many
+possible trade observations to one cleaned tariff observation.
+
+The following tables are an illustrative example, not actual data from the file.
+
+`tsus_final.dta` before merge:
+
+| tsusa | year | tariff_rate |
+|---:|---:|---:|
+| 6012800 | 1968 | 10 |
+
+`trade_appended.dta` before merge:
+
+| tsusa | year | city_code | import_value |
+|---:|---:|---:|---:|
+| 6012800 | 1968 | 101 | 2500 |
+| 6012800 | 1968 | 205 | 1800 |
+| 6012800 | 1968 | 318 | 950 |
+
+`tsus_trade_merged.dta` after merge:
+
+| tsusa | year | tariff_rate | city_code | import_value |
+|---:|---:|---:|---:|---:|
+| 6012800 | 1968 | 10 | 101 | 2500 |
+| 6012800 | 1968 | 10 | 205 | 1800 |
+| 6012800 | 1968 | 10 | 318 | 950 |
+
+This merge means:
+
+- each cleaned tariff observation is matched to trade observations using `tsusa` and
+  `year`;
+- `tsusa` identifies the 7-digit tariff item;
+- `year` makes sure tariff rates are matched to trade records from the same year;
+- the merge allows multiple trade records to match one tariff-year record when the
+  trade file has more detailed observations;
+- the resulting dataset keeps the cleaned tariff variables and adds the matched import
+  trade variables.
+
+After the merge:
+
+- compared with `tsus_final.dta`, this file adds import trade data;
+- compared with `trade_appended.dta`, this file adds the cleaned TSUS tariff rates and
+  schedule information;
+- the file becomes the analysis-ready dataset for work that needs both tariff
+  information and import trade data in the same file.
 ```
 </details>
 
