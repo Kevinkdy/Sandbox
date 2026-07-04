@@ -117,18 +117,17 @@ because the later Stata scripts depend on these fields being readable and consis
 - Tariff item codes, suffixes, units, duty values, notes, flags, and year-specific rate
   columns after the initial import and reshape steps.
 
+## How This File Is Created
+
 By the time this file is created:
 
 - the verified Excel schedules have been imported into Stata;
 - schedule-level files have been combined into one dataset;
 - key columns have been standardized so they can be appended together;
 - year-specific duty columns have been reshaped into a long format;
-- the data is ready for suffix cleaning and TSUSA code construction in
-  `01b_suffix_fix.do`.
+- the data is ready for suffix cleaning and TSUSA code construction in [`01b_suffix_fix.do`](../analysis_guide/01b_suffix_fix.md).
 
-This file is not the final cleaned tariff dataset. It is an intermediate file used
-before suffix corrections, TSUSA construction, reference-rate fixes, and row expansion
-are applied.
+This file is not the final cleaned tariff dataset. It is an intermediate file used before suffix corrections, TSUSA construction, reference-rate fixes, and row expansion are applied.
 ```
 </details>
 
@@ -263,18 +262,17 @@ log close
 - Tariff item codes, suffixes, units, duty values, notes, flags, and year-specific rate
   columns after the initial import and reshape steps.
 
+## How This File Is Created
+
 By the time this file is created:
 
 - the verified Excel schedules have been imported into Stata;
 - schedule-level files have been combined into one dataset;
 - key columns have been standardized so they can be appended together;
 - year-specific duty columns have been reshaped into a long format;
-- the data is ready for suffix cleaning and TSUSA code construction in
-  `01b_suffix_fix.do`.
+- the data is ready for suffix cleaning and TSUSA code construction in [`01b_suffix_fix.do`](../analysis_guide/01b_suffix_fix.md).
 
-This file is not the final cleaned tariff dataset. It is an intermediate file used
-before suffix corrections, TSUSA construction, reference-rate fixes, and row expansion
-are applied.
+This file is not the final cleaned tariff dataset. It is an intermediate file used before suffix corrections, TSUSA construction, reference-rate fixes, and row expansion are applied.
 ```
 </details>
 
