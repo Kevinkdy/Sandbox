@@ -870,11 +870,6 @@ The diagnostic figures are review outputs from `01d_diagnostics.do`. They help r
 
 - [`01d_diagnostics.do`](../analysis_guide/01d_diagnostics.md)
 
-#### Used By
-
-- Manual review of cleaned ad valorem duty rates.
-- Checks for unusual 1968-1972 duty-rate patterns before downstream weighting and trade-data merge steps.
-
 #### What This File Contains
 
 `01d_diagnostics.do` does not create a new Stata dataset. Instead, it exports diagnostic figures and writes log output that help reviewers check whether the cleaned ad valorem duty rates look reasonable.
