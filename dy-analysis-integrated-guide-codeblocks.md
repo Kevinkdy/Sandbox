@@ -75,7 +75,6 @@ This file guide explains the role of the verified schedules as data inputs. The 
 
 #### What This File Contains
 
-```markdown
 The verified schedule files contain digitized TSUS schedule information for schedules 1
 through 8. They preserve the core fields needed for later cleaning and analysis,
 including:
@@ -90,7 +89,6 @@ including:
 The schedules are stored as Excel files before being imported into Stata. Formatting
 choices such as text-formatted cells, preserved suffix values, and note fields matter
 because the later Stata scripts depend on these fields being readable and consistent.
-```
 </details>
 
 
@@ -111,7 +109,6 @@ because the later Stata scripts depend on these fields being readable and consis
 
 #### What This File Contains
 
-```markdown
 - Schedule 1-8 data imported from the verified Excel schedule files.
 - One combined Stata dataset after the individual schedules are appended together.
 - Tariff item codes, suffixes, units, duty values, notes, flags, and year-specific rate
@@ -128,7 +125,6 @@ By the time this file is created:
 - the data is ready for suffix cleaning and TSUSA code construction in [`01b_suffix_fix.do`](../analysis_guide/01b_suffix_fix.md).
 
 This file is not the final cleaned tariff dataset. It is an intermediate file used before suffix corrections, TSUSA construction, reference-rate fixes, and row expansion are applied.
-```
 </details>
 
 
@@ -256,7 +252,6 @@ log close
 
 #### What This File Contains
 
-```markdown
 - Schedule 1-8 data imported from the verified Excel schedule files.
 - One combined Stata dataset after the individual schedules are appended together.
 - Tariff item codes, suffixes, units, duty values, notes, flags, and year-specific rate
@@ -273,7 +268,6 @@ By the time this file is created:
 - the data is ready for suffix cleaning and TSUSA code construction in [`01b_suffix_fix.do`](../analysis_guide/01b_suffix_fix.md).
 
 This file is not the final cleaned tariff dataset. It is an intermediate file used before suffix corrections, TSUSA construction, reference-rate fixes, and row expansion are applied.
-```
 </details>
 
 
@@ -298,7 +292,6 @@ This file is not the final cleaned tariff dataset. It is an intermediate file us
 
 #### What This File Contains
 
-````markdown
 - Suffix-fixed TSUS tariff data created from the appended schedule dataset.
 - Cleaned `item` and `suffix` fields and constructed `tsusa` codes.
 - 320-331 and 301-302 reference-rate corrections.
@@ -312,15 +305,11 @@ This file is not the final cleaned tariff dataset. It is an intermediate file us
 
 The suffix-fixing step also handles the reference-rate cases. For the 320-331 series, item 320 is the base group, and rates for 321-331 are calculated from the corresponding 320 rate plus the additional rate assigned to each series:
 
-```text
 321-331 rate = corresponding 320 base rate + series-specific additional rate
-```
 
 For the 301-302 series, item 301 is the base group, and the 302 rate is calculated from the corresponding 301 rate plus the additional 302 rate:
 
-```text
 302 rate = corresponding 301 base rate + 302 additional rate
-```
 
 The corresponding base rate means the rate with the same suffix code.
 
@@ -374,7 +363,6 @@ By the time this file is created:
 - specific-duty fields have been parsed and converted into numeric values after the suffix expansion step.
 
 This file is the suffix-fixed tariff dataset in the workflow. Unlike [`tsus_appended.dta`](01b_tsus_appended.dta.md), it is no longer just the combined import of schedules 1-8; it includes the suffix corrections, TSUSA construction, rate fixes, and row expansions needed before final duty cleaning.
-````
 </details>
 
 
@@ -732,13 +720,11 @@ log close
 
 #### What This File Contains
 
-```markdown
 - Suffix-fixed TSUS tariff data created from the appended schedule dataset.
 - Cleaned `item` and `suffix` fields and constructed `tsusa` codes.
 - 320-331 and 301-302 reference-rate corrections.
 - Expanded suffix-level rows, added 1973-1975 rows, and parsed specific-duty fields
   before final duty cleaning.
-```
 </details>
 
 
@@ -764,13 +750,11 @@ log close
 
 #### What This File Contains
 
-```markdown
 - Final cleaned TSUS tariff data after duty-variable cleanup.
 - Cleaned tariff schedule structure, suffixes, `tsusa` codes, units, notes, and flags.
 - Numeric duty variables where needed, including selected 1969-1975 ad valorem values
   filled from the 1968 rate when the later values are all zero.
 - Data ready for diagnostics, figures, weighting, and trade-data merges.
-```
 </details>
 
 
@@ -956,13 +940,11 @@ log close
 
 #### What This File Contains
 
-```markdown
 - Final cleaned TSUS tariff data after duty-variable cleanup.
 - Cleaned tariff schedule structure, suffixes, `tsusa` codes, units, notes, and flags.
 - Numeric duty variables where needed, including selected 1969-1975 ad valorem values
   filled from the 1968 rate when the later values are all zero.
 - Data ready for diagnostics, figures, weighting, and trade-data merges.
-```
 </details>
 
 
@@ -983,7 +965,6 @@ The diagnostic figures are review outputs from `01d_diagnostics.do`. They help r
 
 #### What This File Contains
 
-```markdown
 `01d_diagnostics.do` does not create a new Stata dataset. Instead, it exports diagnostic
 figures and writes log output that help reviewers check whether the cleaned ad valorem
 duty rates look reasonable.
@@ -1005,7 +986,6 @@ The diagnostic figures include:
 The diagnostic log also records list outputs for unusual duty-rate patterns, such as
 cases where 1972 rates are higher than 1968 rates, cases where 1972 rates fall sharply
 from 1968 rates, and other records that may need manual review.
-```
 </details>
 
 
@@ -1230,13 +1210,11 @@ The script saves three downstream datasets. First, it saves `tsus_final_weights.
 
 #### What This File Contains
 
-```markdown
 - Final cleaned TSUS tariff data after duty-variable cleanup.
 - Cleaned tariff schedule structure, suffixes, `tsusa` codes, units, notes, and flags.
 - Numeric duty variables where needed, including selected 1969-1975 ad valorem values
   filled from the 1968 rate when the later values are all zero.
 - Data ready for diagnostics, figures, weighting, and trade-data merges.
-```
 </details>
 
 <details>
@@ -1260,7 +1238,6 @@ The annual import trade files are the raw trade-data inputs used by `02_merge.do
 
 #### What This File Contains
 
-```markdown
 - Annual import trade records for 1968 through 1972.
 - Trade variables that are appended into `trade_appended.dta`.
 - `tsusa` values that are converted to numeric format in `02_merge.do` so the appended
@@ -1269,7 +1246,6 @@ The annual import trade files are the raw trade-data inputs used by `02_merge.do
 Compared with `trade_appended.dta`, these files are still separate annual raw inputs.
 Compared with `tsus_trade_merged.dta`, they do not yet include cleaned TSUS tariff rates
 from `tsus_final.dta`.
-```
 </details>
 
 
@@ -1291,13 +1267,11 @@ from `tsus_final.dta`.
 
 #### What This File Contains
 
-```markdown
 - The cleaned TSUS tariff dataset with quantity-based `spec_weight` values added for
   selected Schedule 6 items.
 - Product-level weights calculated from 1976 import quantities.
 - One averaged `spec_weight` value per matched `tsusa` code where 1976 import data is
   available.
-```
 </details>
 
 <details>
@@ -1321,12 +1295,10 @@ from `tsus_final.dta`.
 
 #### What This File Contains
 
-```markdown
 - Combined import trade data from the annual 1968-1972 raw import files.
 - Trade observations with `tsusa` converted to numeric format for merging.
 - The trade-data input used later to merge annual import records with the cleaned TSUS
   tariff data by `tsusa` and `year`.
-```
 </details>
 
 <details>
@@ -1347,7 +1319,6 @@ from `tsus_final.dta`.
 
 #### What This File Contains
 
-```markdown
 - Cleaned TSUS tariff variables from `tsus_final.dta`.
 - Matched import trade variables from `trade_appended.dta`.
 - Observations merged by `tsusa` and `year`, allowing multiple trade records to attach
@@ -1432,7 +1403,6 @@ After the merge:
   schedule information;
 - the file becomes the analysis-ready dataset for work that needs both tariff
   information and import trade data in the same file.
-```
 </details>
 
 
