@@ -1316,11 +1316,13 @@ from `tsus_final.dta`.
 
 ## Understanding The Final 1:m Tariff-Trade Merge
 
-This is a `1:m` merge because `tsus_final.dta` is the master file in this step. For
-each `tsusa`-`year` combination, it provides the cleaned tariff schedule information.
+`tsus_trade_merged.dta` is created by matching the cleaned tariff data to the appended
+trade data using `tsusa` and `year`.
+
+This step uses a `1:m` merge because `tsus_final.dta` is the master file. For each
+`tsusa`-`year` combination, it provides the cleaned tariff schedule information.
 `trade_appended.dta` is the using file, and it can contain multiple import trade
-records for the same `tsusa`-`year` combination. The merge therefore attaches many
-possible trade observations to one cleaned tariff observation.
+records for the same `tsusa`-`year` combination.
 
 In the merged output, the tariff-side information from `tsus_final.dta` can repeat
 across several matched trade rows when the trade file has more detailed observations
