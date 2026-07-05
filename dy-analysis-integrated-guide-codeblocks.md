@@ -299,7 +299,7 @@ This file is not the final cleaned tariff dataset. It is an intermediate file us
   before final duty cleaning.
 
 
-## How This File Is Created
+## Understanding The 301-302 And 320-331 Corrections
 
 `tsus_uncorrected.dta` is created by running [`01b_suffix_fix.do`](../analysis_guide/01b_suffix_fix.md) on [`tsus_appended.dta`](01b_tsus_appended.dta.md). This step turns the appended schedule data into the suffix-fixed TSUS tariff dataset.
 
@@ -351,18 +351,6 @@ After suffix-fixing code:
 | 301 | 20 | 4 |
 | 302 | 20 | 5.5 |
 
-By the time this file is created:
-
-- leading and trailing spaces have been removed from `item` and `suffix`;
-- known non-code suffix markers, specifically `"."` and `"1/"`, have been removed;
-- remaining suffix values have been checked to make sure they contain only digits or are blank;
-- `tsusa` codes have been created by combining the 5-digit item code with the suffix code, and recreated after suffix expansion;
-- 320-331 and 301-302 reference-rate cases have been handled;
-- rows that apply to multiple suffix codes have been expanded so that duty rates are recorded at the correct suffix level;
-- 1973-1975 rows have been added by copying the 1972 row structure;
-- specific-duty fields have been parsed and converted into numeric values after the suffix expansion step.
-
-This file is the suffix-fixed tariff dataset in the workflow. Unlike [`tsus_appended.dta`](01b_tsus_appended.dta.md), it is no longer just the combined import of schedules 1-8; it includes the suffix corrections, TSUSA construction, rate fixes, and row expansions needed before final duty cleaning.
 </details>
 
 
