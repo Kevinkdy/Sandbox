@@ -930,7 +930,7 @@ The diagnostic figures are review outputs from `01d_diagnostics.do`. They help r
 
 - [`01d_diagnostics.do`](../analysis_guide/01d_diagnostics.md)
 
-#### What This File Contains
+#### What These Outputs Include
 
 `01d_diagnostics.do` does not create a new Stata dataset. Instead, it exports diagnostic
 figures and writes log output that help reviewers check whether the cleaned ad valorem
