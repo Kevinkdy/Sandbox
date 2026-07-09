@@ -1,0 +1,260 @@
+# 데이터 프로파일: `tsus_trade_merged.dta`
+
+## 1. 데이터 프로파일
+
+* 데이터셋 이름: `tsus_trade_merged.dta`
+* 원자료 출처: TSUS tariff schedule 자료와 1968-1972년 annual import trade files
+* 버전 / 작성일: `02_merge.do`가 생성한 post-merge output 기준
+* 원자료 / 정제된 데이터 / 분석용 데이터 여부: 정제된 TSUS tariff data와 appended trade data를 결합한 분석용 데이터
+* 데이터셋의 목적: TSUS 품목별 관세 정보와 수입 무역 정보를 연결하여 관세율, 관세액, 수입액 변화, 품목별/국가별 패널 분석에 사용하기 위한 데이터
+
+## 2. 관측 단위
+
+* 데이터의 한 행은 무엇을 의미하는가?  
+  하나의 `tsusa`-`year` tariff observation에 매칭된 trade observation을 의미한다. 같은 `tsusa`-`year`에 여러 국가 또는 trade record가 있을 수 있다.
+
+* 의도된 고유 식별자는 무엇인가?  
+  원본 merged file에서는 `tsusa`, `year`, 그리고 trade-side 식별자, 예를 들어 `cty_code`,가 함께 필요할 가능성이 높다.
+
+* 해당 식별자는 실제로 각 행을 고유하게 식별하는가?  
+  `tsusa`와 `year`만으로는 고유하게 식별하지 못한다.
+
+* 고유하게 식별하지 못한다면, 그 이유는 무엇인가?  
+  `tsus_final.dta`는 `tsusa`-`year` 기준으로 tariff 정보를 제공하지만, trade data는 같은 `tsusa`-`year`에 대해 여러 trade observations를 가질 수 있기 때문이다.
+
+## 3. 데이터 범위
+
+* 포함된 기간: 1968-1972년
+* 포함된 단위: TSUS 품목 코드(`tsusa`), 연도(`year`), 국가 또는 trade record(`cty_code`)
+* 포함된 집단 / 범주: TSUS tariff items와 annual import trade records
+* 표본 제한 조건: 분석에서는 보통 `tariff_merge_status == 3`인 matched observations를 사용한다.
+* 전체 관측치 수: Stata에서 확인 필요
+* 고유 단위 수: 고유 `tsusa`, 고유 `cty_code`, 고유 `tsusa`-`year` 수 확인 필요
+
+## 4. 데이터 구조
+
+* 횡단면 자료 / 시계열 자료 / 패널 자료 여부: 패널 구조로 전환 가능한 pooled trade-tariff dataset
+* 균형 패널 / 불균형 패널 여부: 확인 필요. 품목과 국가별 관측 가능성이 연도마다 다를 수 있으므로 불균형 패널일 가능성이 있다.
+* 자료의 시간 단위: 연도
+* Long format / wide format 여부: Long format. 이후 1968년과 1972년 변화를 계산할 때 일부 변수를 wide format으로 reshape한다.
+
+## 5. 핵심 식별자
+
+* 단위 식별자: `tsusa`
+* 시간 식별자: `year`
+* 집단 / 범주 식별자: `cty_code`
+* 병합 기준 변수: `tsusa`, `year`
+
+## 6. 변수 목록
+
+* 식별자 변수: `tsusa`, `year`, `cty_code`, `tariff_merge_status`
+* 결과변수 후보: `con_val_yr`, `log_change_con_val`, `pct_change_con_val`, `change_con_val`
+* 주요 설명변수 후보: `duty1_ad`, `duty2_ad`, `duty1_spec`, `duty2_spec`, `eff_tariff_rate1`, `eff_tariff_rate2`, `change_eff1`, `change_eff2`
+* 통제변수 후보: `tsusa`, `cty_code`, `year`
+* 가중치 변수: `con_val_yr1968`, `con_qy1_yr`
+* 생성 변수: `total_tariff_amount1`, `total_tariff_amount2`, `eff_tariff_rate1`, `eff_tariff_rate2`, `has_tariff1`, `has_tariff2`, `has_tariff_any`, `ln_tariff_amount1`, `ln_tariff_amount2`, `change_eff1`, `change_eff2`, `log_change_con_val`
+
+## 7. 핵심 변수 정의
+
+### `tsusa`
+
+* 정의: TSUS tariff item code
+* 경제학적 의미: 관세가 적용되는 품목 단위
+* 단위: 코드
+* 출처: cleaned TSUS tariff data
+* 결측치 비율: 확인 필요
+* 가능한 값의 범위: 확인 필요
+* 참고사항: tariff data와 trade data를 병합할 때 핵심 품목 식별자로 사용된다.
+
+### `year`
+
+* 정의: 관측 연도
+* 경제학적 의미: 관세와 수입 trade record가 속한 연도
+* 단위: 연도
+* 출처: TSUS data와 annual import trade files
+* 결측치 비율: 확인 필요
+* 가능한 값의 범위: 1968-1972
+* 참고사항: `tsusa`와 함께 핵심 merge key로 사용된다.
+
+### `cty_code`
+
+* 정의: trade data의 국가 코드
+* 경제학적 의미: 수입 원산지 또는 trade partner country 식별자
+* 단위: 코드
+* 출처: annual import trade files
+* 결측치 비율: 확인 필요
+* 가능한 값의 범위: 확인 필요
+* 참고사항: country-level panel을 만들 때 `tsusa`-`cty_code`-`year` 단위로 사용된다.
+
+### `con_val_yr`
+
+* 정의: consumption import value
+* 경제학적 의미: 특정 품목, 국가, 연도에서 관측된 수입액
+* 단위: 금액 단위. 정확한 원자료 단위는 확인 필요
+* 출처: annual import trade files
+* 결측치 비율: 확인 필요
+* 가능한 값의 범위: 0 이상이어야 한다.
+* 참고사항: effective tariff rate 계산과 import value change 계산의 핵심 변수다.
+
+### `con_qy1_yr`
+
+* 정의: consumption import quantity
+* 경제학적 의미: specific duty를 관세액으로 환산할 때 사용되는 수입 수량
+* 단위: 수량 단위. 품목별 단위 확인 필요
+* 출처: annual import trade files
+* 결측치 비율: 확인 필요
+* 가능한 값의 범위: 0 이상이어야 한다.
+* 참고사항: `total_tariff_amount1`, `total_tariff_amount2` 계산에 사용된다.
+
+### `duty1_ad`, `duty2_ad`
+
+* 정의: ad valorem duty rate variables
+* 경제학적 의미: 수입액 대비 부과되는 종가세율
+* 단위: percent
+* 출처: cleaned TSUS tariff data
+* 결측치 비율: 확인 필요
+* 가능한 값의 범위: 일반적으로 0 이상
+* 참고사항: `con_val_yr * (duty_ad / 100)` 방식으로 관세액 계산에 사용된다.
+
+### `duty1_spec`, `duty2_spec`
+
+* 정의: specific duty rate variables
+* 경제학적 의미: 수입 수량 단위당 부과되는 종량세율
+* 단위: 품목별 수량 단위당 금액. 정확한 단위는 확인 필요
+* 출처: cleaned TSUS tariff data
+* 결측치 비율: 확인 필요
+* 가능한 값의 범위: 일반적으로 0 이상
+* 참고사항: `999999`는 실제 관세율이 아니라 sentinel/outlier로 처리해야 한다.
+
+### `total_tariff_amount1`, `total_tariff_amount2`
+
+* 정의: 종가세와 종량세를 합산해 계산한 관세액
+* 경제학적 의미: 해당 품목-연도 또는 품목-국가-연도에서 추정되는 총 관세 부담
+* 단위: 금액
+* 출처: `05_post_merge_analysis.do`에서 생성
+* 결측치 비율: 확인 필요
+* 가능한 값의 범위: 0 이상이어야 한다.
+* 참고사항: 계산식은 `con_val_yr * (duty_ad / 100) + con_qy1_yr * duty_spec`이다.
+
+### `eff_tariff_rate1`, `eff_tariff_rate2`
+
+* 정의: effective tariff rate
+* 경제학적 의미: 수입액 대비 총 관세액의 비율
+* 단위: percent
+* 출처: `05_post_merge_analysis.do`에서 생성
+* 결측치 비율: `con_val_yr <= 0`이면 계산되지 않으므로 확인 필요
+* 가능한 값의 범위: 일반적으로 0 이상
+* 참고사항: 계산식은 `total_tariff_amount / con_val_yr * 100`이다.
+
+## 8. 결측치
+
+* 어떤 변수에 결측치가 존재하는가?  
+  `duty1_spec`, `duty2_spec`, `duty1_ad`, `duty2_ad`, trade value/quantity variables, generated rate variables에서 확인 필요
+
+* 결측치가 특정 연도나 집단에 집중되어 있는가?  
+  연도별, `cty_code`별, `tsusa`별로 확인 필요
+
+* 결측치는 실제 결측값인가, 0인가, 아니면 해당 없음에 가까운 값인가?  
+  관세율 변수의 결측은 실제 missing 또는 해당 없음일 수 있다. `999999`는 실제 값이 아니라 sentinel/outlier로 처리해야 한다.
+
+* 핵심 변수의 결측치를 제거하면 표본이 얼마나 줄어드는가?  
+  `con_val_yr > 0`, nonmissing tariff variables, matched observations 조건을 순서대로 적용해 확인 필요
+
+## 9. 중복 및 일관성 점검
+
+* 중복 관측치가 존재하는가?  
+  `tsusa`-`year` 기준으로는 중복이 존재하는 것이 자연스럽다. 원본 merged file은 `1:m` merge 결과이기 때문이다.
+
+* 경제적으로 불가능한 값이 존재하는가?  
+  음수 수입액, 음수 수량, 음수 관세액, 비정상적으로 큰 관세율은 확인 필요
+
+* 변수들 사이에 논리적으로 모순되는 값이 존재하는가?  
+  `con_val_yr == 0`인데 positive tariff amount가 있는 경우, tariff rate가 missing인데 tariff amount가 positive인 경우, `tariff_merge_status != 3`인데 분석에 포함된 경우를 확인해야 한다.
+
+## 10. 변수 분포
+
+* 핵심 변수들의 분포는 어떤 형태인가?  
+  수입액과 관세액은 오른쪽으로 치우친 분포일 가능성이 높다.
+
+* 분포가 한쪽으로 치우쳐 있는가?  
+  `con_val_yr`, `total_tariff_amount1`, `total_tariff_amount2`는 소수의 큰 품목이 분포를 지배할 가능성이 있다.
+
+* 0이 많이 포함되어 있는가?  
+  관세액과 수입액에서 0 또는 매우 작은 값의 빈도를 확인해야 한다.
+
+* 극단값이 존재하는가?  
+  `duty1_spec`, `duty2_spec`의 `999999`는 sentinel/outlier로 확인되어 제거 또는 결측 처리한다.
+
+* 변수 변환이 필요한가?  
+  관세액과 수입액은 로그 변환이 유용하다. `05_post_merge_analysis.do`는 `ln_tariff_amount1`, `ln_tariff_amount2`, `log_change_con_val`을 생성한다.
+
+## 11. 시간에 따른 패턴
+
+* 핵심 변수들은 시간에 따라 어떻게 변하는가?  
+  연도별 수입액, 관세액, effective tariff rate의 평균과 합계를 확인해야 한다.
+
+* 특정 시점에 급격한 변화가 나타나는가?  
+  1968년과 1972년 사이의 관세율 변화와 수입액 변화를 비교하는 것이 주요 분석 방향이다.
+
+* 연도별 관측치 수가 시간에 따라 변하는가?  
+  `year`별 관측치 수와 matched observations 수를 확인해야 한다.
+
+## 12. 집단별 패턴
+
+* 핵심 변수들은 집단별로 어떻게 다른가?  
+  `tsusa`별, `cty_code`별로 수입액과 관세율 분포가 다를 수 있다.
+
+* 특정 집단이 데이터 전체를 지배하는가?  
+  일부 큰 품목 또는 주요 교역국이 전체 수입액의 큰 비중을 차지할 가능성이 있다.
+
+* 결측치나 극단값이 특정 집단에 집중되어 있는가?  
+  `tsusa`, `cty_code`, `year`별 missing 및 outlier 빈도를 확인해야 한다.
+
+## 13. 분석에 활용 가능한 변동
+
+* 주요 설명변수는 단위 간에 차이가 있는가?  
+  품목별로 관세율과 관세액이 다르므로 cross-sectional variation이 있다.
+
+* 주요 설명변수는 같은 단위 내에서 시간에 따라 변하는가?  
+  1968-1972년 동안 같은 `tsusa`의 관세율 변화가 있는지 확인해야 한다.
+
+* 고정효과를 포함한 뒤에도 충분한 변동이 남아 있는가?  
+  `tsusa` fixed effects와 `year` fixed effects를 포함한 뒤 관세율 변화가 충분히 남는지 확인 필요
+
+* 관심 있는 관계를 식별할 수 있는 변동은 무엇인가?  
+  같은 품목의 1968년 대비 1972년 관세율 변화와 수입액 변화가 핵심 식별 변동이다.
+
+## 14. 이 데이터가 답할 수 있는 질문
+
+* 기술적 질문: 1968-1972년 동안 TSUS 품목별 수입액과 관세율은 어떻게 분포하는가?
+* 상관관계에 관한 질문: effective tariff rate가 높은 품목일수록 관세액이나 수입액 변화가 다른가?
+* 가능한 인과관계 질문: 관세율 변화가 수입액 변화와 관련이 있는가? 단, 인과 해석을 위해서는 정책 변화의 외생성, 품목별 추세, 수요/공급 충격, 국가별 요인 등을 추가로 검토해야 한다.
+* 이 데이터만으로는 답하기 어려운 질문: 관세 변화의 순수한 causal effect, 국내 생산 변화, 소비자 가격 변화, 기업 수준 반응, 관세 회피 또는 대체 효과는 이 데이터만으로는 충분히 식별하기 어렵다.
+
+## 15. 주요 데이터 이슈와 다음 단계
+
+* 알려진 데이터 이슈:
+  * `tsusa`-`year`만으로는 merged file의 행이 고유하게 식별되지 않는다.
+  * `duty1_spec`, `duty2_spec`에서 `999999`가 sentinel/outlier로 나타나므로 실제 값처럼 사용하면 안 된다.
+  * matched observations만 분석하려면 `tariff_merge_status == 3` 조건을 적용해야 한다.
+  * `con_val_yr <= 0`인 경우 effective tariff rate와 log import change 계산이 어렵다.
+
+* 이미 완료한 점검:
+  * `05_post_merge_analysis.do`는 `tsus_trade_merged.dta`에서 시작한다.
+  * matched observations만 사용해 `tsusa`-`year` panel과 `tsusa`-`cty_code`-`year` panel을 만든다.
+  * `tsusa`-`year` panel에서는 `isid tsusa year`를 확인한다.
+  * country-level panel에서는 `isid tsusa cty_code year`를 확인한다.
+
+* 추가로 필요한 점검:
+  * 전체 관측치 수, 고유 `tsusa` 수, 고유 `cty_code` 수 확인
+  * 핵심 변수별 결측치 비율 확인
+  * `tariff_merge_status` 분포 확인
+  * 연도별 관측치 수와 수입액 합계 확인
+  * `999999` 및 극단값 처리 전후 분포 비교
+  * fixed effects 포함 후 관세율 변화가 충분한지 확인
+
+* 다음으로 권장되는 분석:
+  * `tariff_merge_status == 3` matched sample을 기본 표본으로 설정
+  * `con_val_yr > 0`인 표본에서 effective tariff rate와 log import value 분석
+  * 1968-1972년 변화 자료를 만들어 `change_eff1`, `change_eff2`, `log_change_con_val`의 관계 확인
+  * 주요 결과가 outlier trimming, 가중치 사용 여부, duty measure 선택에 민감한지 robustness check 수행
