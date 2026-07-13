@@ -1,3 +1,4 @@
+```stata
 * 병합 이후 분석: 기존 패널을 사용해 분포, 관세 변화, 수입액 변화를 분석한다.
 
 cd "C:\Users\USER\Desktop\Tariff-RA-Data"
@@ -465,3 +466,4 @@ end
 run_post_merge_analysis
 
 log close
+```
